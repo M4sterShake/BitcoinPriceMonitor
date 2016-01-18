@@ -37,6 +37,14 @@
       <HintPath>..\packages\RestSharp.105.2.3\lib\net452\RestSharp.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="StructureMap, Version=4.0.1.318, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\structuremap.4.0.1.318\lib\net40\StructureMap.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="StructureMap.Net4, Version=4.0.1.318, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\structuremap.4.0.1.318\lib\net40\StructureMap.Net4.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
@@ -56,6 +64,7 @@
     <Compile Include="INotificationTrayIcon.cs" />
     <Compile Include="ISettings.cs" />
     <Compile Include="ITradePriceMonitor.cs" />
+    <Compile Include="IocRegistry.cs" />
     <Compile Include="TradePriceMonitorContextMenu.cs" />
     <Compile Include="TradePriceMonitor.cs" />
     <Compile Include="Program.cs" />

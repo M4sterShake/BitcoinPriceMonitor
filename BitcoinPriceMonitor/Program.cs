@@ -6,6 +6,7 @@ using System.Drawing.Text;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using StructureMap;
 
 namespace BitcoinPriceMonitor
 {
@@ -19,13 +20,16 @@ namespace BitcoinPriceMonitor
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            ITradePriceMonitor priceMonitor = new BitcoinAveragePriceMonitor(TradePriceType.Last, 2000);
-            ITradePriceMonitorContextMenu trayMenu = new TradePriceMonitorContextMenu(priceMonitor);
-            INotificationTrayIcon trayIcon = new NotificationTrayIcon(trayMenu);
+
+            // Set up IoC container.
+            var container = new Container(new IocRegistry());
+            ITradePriceMonitor priceMonitor = container.GetInstance<ITradePriceMonitor>();
+            INotificationTrayIcon trayIcon = container.GetInstance<INotificationTrayIcon>();
             priceMonitor.StartMonitoring((result) =>
             {
                 trayIcon.Update(Math.Round(result).ToString());
             });
+
             Application.Run();
         }
     }
