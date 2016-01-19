@@ -30,6 +30,12 @@ namespace BitcoinPriceMonitor
             notifyIcon.Icon = CreateIconImage(iconText);
         }
 
+        public void Close()
+        {
+            notifyIcon.Visible = false;
+            notifyIcon.Dispose();
+        }
+
         private Icon CreateIconImage(string sImageText)
         {
             Bitmap objBmpImage = new Bitmap(1, 1);

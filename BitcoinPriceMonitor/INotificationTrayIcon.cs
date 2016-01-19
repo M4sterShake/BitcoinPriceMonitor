@@ -9,5 +9,6 @@ namespace BitcoinPriceMonitor
     interface INotificationTrayIcon
     {
         void Update(string iconText);
+        void Close();
     }
 }

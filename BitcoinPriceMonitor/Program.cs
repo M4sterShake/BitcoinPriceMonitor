@@ -16,20 +16,20 @@ namespace BitcoinPriceMonitor
         /// The main entry point for the application.
         /// </summary>
         [STAThread]
-        static void Main()
+        private static void Main()
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            // Set up IoC container.
             var container = new Container(new IocRegistry());
-            ITradePriceMonitor priceMonitor = container.GetInstance<ITradePriceMonitor>();
-            INotificationTrayIcon trayIcon = container.GetInstance<INotificationTrayIcon>();
+            var priceMonitor = container.GetInstance<ITradePriceMonitor>();
+            var trayIcon = container.GetInstance<INotificationTrayIcon>();
             priceMonitor.StartMonitoring((result) =>
             {
                 trayIcon.Update(Math.Round(result).ToString());
             });
 
+            AppDomain.CurrentDomain.ProcessExit += (object sender, EventArgs e) => trayIcon.Close();
             Application.Run();
         }
     }
