@@ -11,13 +11,15 @@ namespace BitcoinPriceMonitor
     {
         public IocRegistry()
         {
-            For<ITradePriceMonitor>().Use<BitcoinAveragePriceMonitor>()
+            For<ITradePriceMonitor>().Singleton().Use<BitcoinAveragePriceMonitor>()
                 .Ctor<TradePriceType>().Is(TradePriceType.Last)
-                .Ctor<long>().Is(2000);
-
-            For<ITradePriceMonitorContextMenu>().Use<TradePriceMonitorContextMenu>();
+                .Ctor<long>().Is(2000)
+                .Name = "DefaultPriceMonitor";
             For<INotificationTrayIcon>().Use<NotificationTrayIcon>();
-
+            For<ITradePriceMonitorContextMenu>().Use<TradePriceMonitorContextMenu>()
+                .Ctor<ITradePriceMonitor>().IsNamedInstance("DefaultPriceMonitor");
+            For<IBitcoinPriceMonitorApp>().Use<BitcoinPriceMonitorApp>()
+                .Ctor<ITradePriceMonitor>().IsNamedInstance("DefaultPriceMonitor");
         }
     }
 }

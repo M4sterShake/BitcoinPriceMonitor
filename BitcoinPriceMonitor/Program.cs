@@ -20,17 +20,16 @@ namespace BitcoinPriceMonitor
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-
-            var container = new Container(new IocRegistry());
-            var priceMonitor = container.GetInstance<ITradePriceMonitor>();
-            var trayIcon = container.GetInstance<INotificationTrayIcon>();
-            priceMonitor.StartMonitoring((result) =>
-            {
-                trayIcon.Update(Math.Round(result).ToString());
-            });
-
-            AppDomain.CurrentDomain.ProcessExit += (object sender, EventArgs e) => trayIcon.Close();
+            ConfigureIocContainer();
+            
             Application.Run();
+        }
+
+        private static void ConfigureIocContainer()
+        {
+            var container = new Container(new IocRegistry());
+            IBitcoinPriceMonitorApp app = container.GetInstance<IBitcoinPriceMonitorApp>();
+            app.Start();
         }
     }
 }

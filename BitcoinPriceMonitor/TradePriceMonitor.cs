@@ -7,7 +7,7 @@ using System.Threading;
 
 namespace BitcoinPriceMonitor
 {
-    public abstract class TradePriceMonitor : ITradePriceMonitor
+    public abstract class TradePriceMonitor : ITradePriceMonitor, IObservable<double>
     {
         public Currency ConvertToCurrency { get; set; } = Currency.USD;
         public TradePriceType PriceType { get; set; }
@@ -15,6 +15,7 @@ namespace BitcoinPriceMonitor
         public long Frequency { get; set; } = 60000;
 
         private Timer _priceCheckTimer;
+        private List<IObserver<double>> observers = new List<IObserver<double>>();
 
         public TradePriceMonitor()
             : this(TradePriceType.Last)
@@ -44,19 +45,12 @@ namespace BitcoinPriceMonitor
             this.Frequency = frequency;
         }
 
-        /// <summary>
-        /// Starts monitoring the price at a set frequency
-        /// </summary>
-        /// <param name="callback">An optional callback to be called each time the price is updated.</param>
-        public void StartMonitoring(Action<double> callback = null)
+        public void StartMonitoring()
         {
             _priceCheckTimer = new Timer(state => 
             {
                 CurrentPrice = checkPrice();
-                if(callback != null)
-                {
-                    callback(CurrentPrice);
-                }
+                Notify(CurrentPrice);
             }, null, 0, Frequency);
         }
 
@@ -65,7 +59,21 @@ namespace BitcoinPriceMonitor
             _priceCheckTimer.Dispose();
         }
 
+        public IDisposable Subscribe(IObserver<double> observer)
+        {
+            observers.Add(observer);
+            return new Unsubscriber(observers, observer);
+        }
+
         abstract protected double checkPrice();
+
+        private void Notify(double price)
+        {
+            foreach (var observer in observers)
+            {
+                observer.OnNext(price);
+            }
+        }
     }
 
     public enum TradePriceType

@@ -10,7 +10,7 @@ using System.Windows.Forms;
 
 namespace BitcoinPriceMonitor
 {
-    public class NotificationTrayIcon : INotificationTrayIcon
+    public class NotificationTrayIcon : INotificationTrayIcon, IObserver<double>
     {
         private ITradePriceMonitorContextMenu _contextMenu;
         private NotifyIcon notifyIcon;
@@ -21,7 +21,7 @@ namespace BitcoinPriceMonitor
             notifyIcon = new NotifyIcon
             {
                 Visible = true,
-                ContextMenu = _contextMenu.GetMenu()
+                ContextMenu = _contextMenu.Menu
             };
         }
 
@@ -34,6 +34,11 @@ namespace BitcoinPriceMonitor
         {
             notifyIcon.Visible = false;
             notifyIcon.Dispose();
+        }
+
+        public void OnNext(double value)
+        {
+            notifyIcon.Icon = CreateIconImage(Math.Round(value).ToString());
         }
 
         private Icon CreateIconImage(string sImageText)
@@ -56,6 +61,14 @@ namespace BitcoinPriceMonitor
             return Icon.FromHandle(objBmpImage.GetHicon());
         }
 
+        public void OnError(Exception error)
+        {
+            throw new NotImplementedException();
+        }
 
+        public void OnCompleted()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -9,6 +9,6 @@ namespace BitcoinPriceMonitor
 {
     public interface ITradePriceMonitorContextMenu
     {
-        ContextMenu GetMenu();
+        ContextMenu Menu { get; }
     }
 }

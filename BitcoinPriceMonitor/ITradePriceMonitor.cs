@@ -10,9 +10,10 @@ namespace BitcoinPriceMonitor
     {
         double CurrentPrice { get; }
         TradePriceType PriceType { get; set; }
+        Currency ConvertToCurrency { get; set; }
         long Frequency { get; set; }
 
-        void StartMonitoring(Action<double> callback = null);
+        void StartMonitoring();
         void StopMonitoring();
     }
 }
