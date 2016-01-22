@@ -24,9 +24,9 @@ namespace BitcoinPriceMonitor
 
         public void Start()
         {
-            var observablePriceMonitor = _priceMonitor as IObservable<double>;
-            var observerContextMenu = _contextMenu as IObserver<double>;
-            var observerIcon = _notifyIcon as IObserver<double>;
+            var observablePriceMonitor = _priceMonitor as ITradePriceObservable;
+            var observerContextMenu = _contextMenu as ITradePriceObserver;
+            var observerIcon = _notifyIcon as ITradePriceObserver;
             observablePriceMonitor.Subscribe(observerContextMenu);
             observablePriceMonitor.Subscribe(observerIcon);
             _priceMonitor.StartMonitoring();

@@ -7,7 +7,7 @@ using System.Windows.Forms;
 
 namespace BitcoinPriceMonitor
 {
-    public class TradePriceMonitorContextMenu : ITradePriceMonitorContextMenu, IObserver<double>
+    public class TradePriceMonitorContextMenu : ITradePriceMonitorContextMenu
     {
         public ContextMenu Menu { get; private set; }
 
@@ -19,7 +19,8 @@ namespace BitcoinPriceMonitor
             Menu = GetMenu();
         }
 
-        
+        public Guid ObserverId { get; } = Guid.NewGuid();
+
         private ContextMenu GetMenu()
         {
             var contextMenu = new ContextMenu();
@@ -42,6 +43,7 @@ namespace BitcoinPriceMonitor
             {
                 Name = "BitcoinPrice"
             });
+            contextMenu.MenuItems.Add("-");
             contextMenu.MenuItems.Add(settingsMenuItem);
             contextMenu.MenuItems.Add("Exit", ExitEventHandler);
 
@@ -115,23 +117,13 @@ namespace BitcoinPriceMonitor
         }
         #endregion
 
-        public void OnNext(double value)
+        public void Update(double value)
         {
             var foundMenuItems  = Menu.MenuItems.Find("BitcoinPrice", false);
             if (foundMenuItems?.Length > 0)
             {
-                foundMenuItems[0].Text = $"{value.ToString()} {_tradePriceMonitor.ConvertToCurrency.ToString()}";
+                foundMenuItems[0].Text = $"{value} {_tradePriceMonitor.ConvertToCurrency}";
             }
-        }
-
-        public void OnError(Exception error)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void OnCompleted()
-        {
-            throw new NotImplementedException();
         }
     }
 }

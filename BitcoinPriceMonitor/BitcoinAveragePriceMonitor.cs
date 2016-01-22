@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace BitcoinPriceMonitor
 {
-    public class BitcoinAveragePriceMonitor : TradePriceMonitor
+    public class BitcoinAveragePriceMonitor : Monitor
     {
         public BitcoinAveragePriceMonitor()
         {

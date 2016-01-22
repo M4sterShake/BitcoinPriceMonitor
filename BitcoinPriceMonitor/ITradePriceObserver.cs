@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace BitcoinPriceMonitor
 {
-    interface INotificationTrayIcon : ITradePriceObserver
+    public interface ITradePriceObserver
     {
-        void Update(string iconText);
-        void Close();
+        Guid ObserverId { get; }
+        void Update(double price);
     }
 }

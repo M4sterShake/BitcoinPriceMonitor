@@ -7,7 +7,7 @@ using System.Windows.Forms;
 
 namespace BitcoinPriceMonitor
 {
-    public interface ITradePriceMonitorContextMenu
+    public interface ITradePriceMonitorContextMenu : ITradePriceObserver
     {
         ContextMenu Menu { get; }
     }

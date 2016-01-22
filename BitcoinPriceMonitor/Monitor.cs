@@ -7,7 +7,7 @@ using System.Threading;
 
 namespace BitcoinPriceMonitor
 {
-    public abstract class TradePriceMonitor : ITradePriceMonitor, IObservable<double>
+    public abstract class Monitor : ITradePriceMonitor, ITradePriceObservable
     {
         public Currency ConvertToCurrency { get; set; } = Currency.USD;
         public TradePriceType PriceType { get; set; }
@@ -15,31 +15,31 @@ namespace BitcoinPriceMonitor
         public long Frequency { get; set; } = 60000;
 
         private Timer _priceCheckTimer;
-        private List<IObserver<double>> observers = new List<IObserver<double>>();
+        private List<ITradePriceObserver> observers = new List<ITradePriceObserver>();
 
-        public TradePriceMonitor()
+        public Monitor()
             : this(TradePriceType.Last)
         {
         }
 
-        public TradePriceMonitor(TradePriceType priceType)
+        public Monitor(TradePriceType priceType)
         {
             this.PriceType = priceType;
         }
 
-        public TradePriceMonitor(TradePriceType priceType, Currency convertToCurrency)
+        public Monitor(TradePriceType priceType, Currency convertToCurrency)
             : this(priceType)
         {
             this.ConvertToCurrency = convertToCurrency;
         }
 
-        public TradePriceMonitor(TradePriceType priceType, long frequency)
+        public Monitor(TradePriceType priceType, long frequency)
             : this(priceType)
         {
             this.Frequency = frequency;
         }
 
-        public TradePriceMonitor(TradePriceType priceType, Currency convertToCurrency, long frequency)
+        public Monitor(TradePriceType priceType, Currency convertToCurrency, long frequency)
             : this(priceType, convertToCurrency)
         {
             this.Frequency = frequency;
@@ -59,20 +59,26 @@ namespace BitcoinPriceMonitor
             _priceCheckTimer.Dispose();
         }
 
-        public IDisposable Subscribe(IObserver<double> observer)
-        {
-            observers.Add(observer);
-            return new Unsubscriber(observers, observer);
-        }
-
         abstract protected double checkPrice();
 
         private void Notify(double price)
         {
             foreach (var observer in observers)
             {
-                observer.OnNext(price);
+                observer.Update(price);
             }
+        }
+
+        public void Subscribe(ITradePriceObserver observer)
+        {
+            observers.Add(observer);
+        }
+
+        public void Unsubscribe(ITradePriceObserver observer)
+        {
+            observers.Remove((from o in observers
+                              where o.ObserverId == observer.ObserverId
+                              select o).First());
         }
     }
 
