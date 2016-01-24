@@ -1,13 +1,8 @@
-﻿using RestSharp;
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace BitcoinPriceMonitor
+﻿namespace BitcoinPriceMonitor
 {
+    using RestSharp;
+    using System;
+
     public class BitcoinAveragePriceMonitor : TradePriceMonitor
     {
         private IRestClient _apiClient;

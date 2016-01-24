@@ -1,15 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Drawing.Drawing2D;
-using System.Drawing.Text;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using StructureMap;
-
-namespace BitcoinPriceMonitor
+﻿namespace BitcoinPriceMonitor
 {
+    using System;
+    using System.Windows.Forms;
+    using StructureMap;
+
     static class Program
     {
         /// <summary>

@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-
-namespace BitcoinPriceMonitor
+﻿namespace BitcoinPriceMonitor
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Windows.Forms;
+
     public class TradePriceMonitorContextMenu : ITradePriceMonitorContextMenu
     {
         public ContextMenu Menu { get; private set; }

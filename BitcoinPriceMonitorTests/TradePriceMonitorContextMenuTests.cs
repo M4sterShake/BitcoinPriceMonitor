@@ -1,13 +1,10 @@
-﻿using System;
-using System.Text;
-using System.Collections.Generic;
-using System.Windows.Forms;
-using BitcoinPriceMonitor;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
-
-namespace BitcoinPriceMonitorTests
+﻿namespace BitcoinPriceMonitorTests
 {
+    using System.Windows.Forms;
+    using BitcoinPriceMonitor;
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using Moq;
+
     /// <summary>
     /// Summary description for UnitTest1
     /// </summary>

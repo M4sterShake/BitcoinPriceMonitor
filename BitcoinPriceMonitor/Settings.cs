@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Configuration;
-
-namespace BitcoinPriceMonitor
+﻿namespace BitcoinPriceMonitor
 {
+    using System.Configuration;
+
     class Settings : ISettings
     {
         public string Get(string name)

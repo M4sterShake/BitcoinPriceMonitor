@@ -1,14 +1,12 @@
-﻿using System;
-using System.Text;
-using System.Collections.Generic;
-using System.Threading;
-using BitcoinPriceMonitor;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
-using RestSharp;
-
-namespace BitcoinPriceMonitorTests
+﻿namespace BitcoinPriceMonitorTests
 {
+    using System;
+    using System.Threading;
+    using BitcoinPriceMonitor;
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using Moq;
+    using RestSharp;
+
     [TestClass]
     public class BitcoinAveragePriceMonitorTests
     {

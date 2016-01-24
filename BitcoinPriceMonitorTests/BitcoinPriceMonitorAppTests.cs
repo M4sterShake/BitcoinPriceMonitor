@@ -1,11 +1,9 @@
-﻿using System;
-using System.Windows.Forms;
-using BitcoinPriceMonitor;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
-
-namespace BitcoinPriceMonitorTests
+﻿namespace BitcoinPriceMonitorTests
 {
+    using BitcoinPriceMonitor;
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using Moq;
+
     [TestClass]
     public class BitcoinPriceMonitorAppTests
     {

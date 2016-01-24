@@ -1,16 +1,14 @@
-﻿using System;
-using System.Text;
-using System.Collections.Generic;
-using System.Windows.Forms;
-using BitcoinPriceMonitor;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
-using System.Drawing;
-using System.Reflection;
-using System.Security.Cryptography;
+﻿namespace BitcoinPriceMonitorTests
+{ 
+    using System;
+    using System.Windows.Forms;
+    using BitcoinPriceMonitor;
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using Moq;
+    using System.Drawing;
+    using System.Reflection;
+    using System.Security.Cryptography;
 
-namespace BitcoinPriceMonitorTests
-{
     /// <summary>
     /// Summary description for NotificationTrayIconTests
     /// </summary>
