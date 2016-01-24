@@ -8,7 +8,7 @@ using StructureMap;
 
 namespace BitcoinPriceMonitor
 {
-    class IocRegistry : Registry
+    public class IocRegistry : Registry
     {
         public IocRegistry()
         {

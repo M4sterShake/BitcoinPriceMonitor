@@ -46,7 +46,7 @@ namespace BitcoinPriceMonitorTests
                 target.StartMonitoring();
             });
             thread.Start();
-            Thread.Sleep(110);
+            Thread.Sleep(130);
 
             // Assert
             Assert.AreEqual(expectedResult, target.CurrentPrice);
@@ -72,9 +72,9 @@ namespace BitcoinPriceMonitorTests
                 target.StartMonitoring();
             });
             thread.Start();
-            Thread.Sleep(110);
+            Thread.Sleep(130);
             target.StopMonitoring();
-            Thread.Sleep(110);
+            Thread.Sleep(130);
 
             // Assert
             Assert.AreEqual(expectedResult, target.CurrentPrice);
@@ -104,7 +104,7 @@ namespace BitcoinPriceMonitorTests
                 target.StartMonitoring();
             });
             thread.Start();
-            Thread.Sleep(120);
+            Thread.Sleep(130);
             target.StopMonitoring();
 
             // Assert
@@ -136,9 +136,9 @@ namespace BitcoinPriceMonitorTests
                 target.StartMonitoring();
             });
             thread.Start();
-            Thread.Sleep(110);
+            Thread.Sleep(130);
             target.Unsubscribe(mockObserver.Object);
-            Thread.Sleep(110);
+            Thread.Sleep(130);
             target.StopMonitoring();
 
             // Assert

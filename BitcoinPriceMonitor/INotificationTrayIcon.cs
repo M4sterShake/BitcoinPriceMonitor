@@ -8,7 +8,6 @@ namespace BitcoinPriceMonitor
 {
     public interface INotificationTrayIcon : ITradePriceObserver
     {
-        void Update(string iconText);
         void Close();
     }
 }

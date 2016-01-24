@@ -1,46 +1,38 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Drawing.Drawing2D;
-using System.Drawing.Text;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-
-namespace BitcoinPriceMonitor
+﻿namespace BitcoinPriceMonitor
 {
+    using System;
+    using System.Drawing;
+    using System.Drawing.Drawing2D;
+    using System.Drawing.Text;
+    using System.Windows.Forms;
+
     public class NotificationTrayIcon : INotificationTrayIcon
     {
         private ITradePriceMonitorContextMenu _contextMenu;
-        private NotifyIcon notifyIcon;
+        private NotifyIcon _notifyIcon;
 
         public NotificationTrayIcon(ITradePriceMonitorContextMenu contextMenu)
         {
             _contextMenu = contextMenu;
-            notifyIcon = new NotifyIcon
+            _notifyIcon = new NotifyIcon
             {
                 Visible = true,
                 ContextMenu = _contextMenu.Menu
             };
+            _notifyIcon.Icon = CreateIconImage("-");
         }
 
         public Guid ObserverId { get; } = Guid.NewGuid();
 
-        public void Update(string iconText)
-        {
-            notifyIcon.Icon = CreateIconImage(iconText);
-        }
-
         public void Close()
         {
-            notifyIcon.Visible = false;
-            notifyIcon.Dispose();
+            _notifyIcon.Visible = false;
+            _notifyIcon.Dispose();
         }
 
         public void Update(double value)
         {
-            notifyIcon.Icon = CreateIconImage(Math.Round(value).ToString());
+            _notifyIcon.Icon = CreateIconImage(Math.Round(value).ToString());
         }
 
         private Icon CreateIconImage(string sImageText)
