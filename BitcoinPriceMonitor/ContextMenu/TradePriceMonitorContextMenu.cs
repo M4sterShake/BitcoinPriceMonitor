@@ -98,6 +98,7 @@
         private void TradePriceTypeEventHandler(TradePriceType tradePriceType, MenuItem sourceItem)
         {
             _tradePriceMonitor.PriceType = tradePriceType;
+            RefreshPriceMonitor();
             UncheckMenuItems(sourceItem.Parent.MenuItems);
             sourceItem.Checked = !sourceItem.Checked;
         }
@@ -105,6 +106,7 @@
         private void CurrencyEventHandler(Currency currency, MenuItem sourceItem)
         {
             _tradePriceMonitor.ConvertToCurrency = currency;
+            RefreshPriceMonitor();
             UncheckMenuItems(sourceItem.Parent.MenuItems);
             sourceItem.Checked = !sourceItem.Checked;
         }
@@ -122,6 +124,12 @@
             {
                 foundMenuItems[0].Text = $"{value} {_tradePriceMonitor.ConvertToCurrency}";
             }
+        }
+
+        private void RefreshPriceMonitor()
+        {
+            _tradePriceMonitor.StopMonitoring();
+            _tradePriceMonitor.StartMonitoring();
         }
     }
 }

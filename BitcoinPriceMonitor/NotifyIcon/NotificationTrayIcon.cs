@@ -17,9 +17,9 @@
             _notifyIcon = new NotifyIcon
             {
                 Visible = true,
-                ContextMenu = _contextMenu.Menu
+                ContextMenu = _contextMenu.Menu,
+                Icon = CreateIconImage("-")
             };
-            _notifyIcon.Icon = CreateIconImage("-");
         }
 
         public Guid ObserverId { get; } = Guid.NewGuid();
@@ -28,6 +28,7 @@
         {
             _notifyIcon.Visible = false;
             _notifyIcon.Dispose();
+            TaskBarUtils.RefreshNotificationArea();
         }
 
         public void Update(double value)
