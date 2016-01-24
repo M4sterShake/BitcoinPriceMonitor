@@ -70,7 +70,7 @@
     <Compile Include="ITradePriceMonitor.cs" />
     <Compile Include="IocRegistry.cs" />
     <Compile Include="TradePriceMonitorContextMenu.cs" />
-    <Compile Include="Monitor.cs" />
+    <Compile Include="TradePriceMonitor.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Settings.cs" />

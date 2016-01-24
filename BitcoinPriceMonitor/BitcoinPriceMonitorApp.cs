@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BitcoinPriceMonitor
 {
-    class BitcoinPriceMonitorApp : IBitcoinPriceMonitorApp
+    public class BitcoinPriceMonitorApp : IBitcoinPriceMonitorApp
     {
         private ITradePriceMonitor _priceMonitor;
         private ITradePriceMonitorContextMenu _contextMenu;

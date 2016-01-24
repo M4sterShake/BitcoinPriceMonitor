@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using RestSharp;
 using StructureMap;
 
 namespace BitcoinPriceMonitor
@@ -12,8 +13,7 @@ namespace BitcoinPriceMonitor
         public IocRegistry()
         {
             For<ITradePriceMonitor>().Singleton().Use<BitcoinAveragePriceMonitor>()
-                .Ctor<TradePriceType>().Is(TradePriceType.Last)
-                .Ctor<long>().Is(2000)
+                .Ctor<IRestClient>().Is(new RestClient("https://api.bitcoinaverage.com"))
                 .Name = "DefaultPriceMonitor";
             For<INotificationTrayIcon>().Use<NotificationTrayIcon>();
             For<ITradePriceMonitorContextMenu>().Use<TradePriceMonitorContextMenu>()

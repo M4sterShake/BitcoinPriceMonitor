@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BitcoinPriceMonitor
 {
-    public interface ITradePriceMonitor
+    public interface ITradePriceMonitor : ITradePriceObservable
     {
         double CurrentPrice { get; }
         TradePriceType PriceType { get; set; }

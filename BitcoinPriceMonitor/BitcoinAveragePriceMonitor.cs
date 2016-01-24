@@ -8,39 +8,20 @@ using System.Threading.Tasks;
 
 namespace BitcoinPriceMonitor
 {
-    public class BitcoinAveragePriceMonitor : Monitor
+    public class BitcoinAveragePriceMonitor : TradePriceMonitor
     {
-        public BitcoinAveragePriceMonitor()
+        private IRestClient _apiClient;
+        public BitcoinAveragePriceMonitor(IRestClient apiClient)
         {
-        }
-
-        public BitcoinAveragePriceMonitor(TradePriceType priceType)
-            : base(priceType)
-        {
-        }
-
-        public BitcoinAveragePriceMonitor(TradePriceType priceType, Currency convertToCurrency)
-            : base(priceType, convertToCurrency)
-        {
-        }
-
-        public BitcoinAveragePriceMonitor(TradePriceType priceType, long frequency)
-            : base(priceType, frequency)
-        {
-        }
-
-        public BitcoinAveragePriceMonitor(TradePriceType priceType, Currency convertToCurrency, long frequency)
-            : base(priceType, convertToCurrency, frequency)
-        {
+            _apiClient = apiClient;
         }
 
         protected override double checkPrice()
         {
-            var apiClient = new RestClient("https://api.bitcoinaverage.com");
             var request = new RestRequest("ticker/global/{currency}/{priceType}", Method.GET);
             request.AddUrlSegment("currency", Enum.GetName(typeof(Currency), this.ConvertToCurrency));
             request.AddUrlSegment("priceType", Enum.GetName(typeof(TradePriceType), this.PriceType).ToLower());
-            IRestResponse response = apiClient.Execute(request);
+            IRestResponse response = _apiClient.Execute(request);
             double result;
             
             return double.TryParse(response.Content, out result) == true ? result : -1;
