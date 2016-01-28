@@ -19,9 +19,9 @@ namespace BitcoinPriceMonitor.PriceMonitor
         {
             _apiClient = apiClient;
             _settings = settings;
-            apiClient.BaseUrl = new Uri(settings.BitcoinAverageApiUrl);
+            apiClient.BaseUrl = new Uri(_settings.BitcoinAverageApiUrl);
         }
-
+        
         protected override double checkPrice()
         {
             var request = new RestRequest("ticker/global/{currency}/{priceType}", Method.GET);

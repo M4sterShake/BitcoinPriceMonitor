@@ -1,12 +1,11 @@
-﻿using BitcoinPriceMonitor.Config;
-using BitcoinPriceMonitor.PriceMonitor;
-
-namespace BitcoinPriceMonitor
+﻿namespace BitcoinPriceMonitor.Profile
 {
     using System.Collections.Generic;
     using System.IO;
-    using System.Web.Script.Serialization;
     using System.Linq;
+    using System.Web.Script.Serialization;
+    using Config;
+    using PriceMonitor;
 
     public class ProfileStore : IProfileStore
     {
@@ -38,14 +37,14 @@ namespace BitcoinPriceMonitor
         public ITradePriceMonitor LoadProfile(string profileName)
         {
             string serializedProfile = File.ReadAllText(getProfileFileName(profileName));
-            var profile = new JavaScriptSerializer().Deserialize<Profile>(serializedProfile);
+            var profile = new JavaScriptSerializer().Deserialize<BitcoinPriceMonitor.Profile.Profile>(serializedProfile);
             return _monitorFactory.Get(profile);
         }
 
         public void SaveProfile(ITradePriceMonitor profile, string profileName)
         {
             var serializer = new JavaScriptSerializer();
-            var serializedProfile = serializer.Serialize(new Profile(profile));
+            var serializedProfile = serializer.Serialize(new BitcoinPriceMonitor.Profile.Profile(profile));
             File.WriteAllText(getProfileFileName(profileName), serializedProfile);
         }
 

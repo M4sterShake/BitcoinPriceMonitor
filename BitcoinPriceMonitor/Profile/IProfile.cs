@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using BitcoinPriceMonitor.PriceMonitor;
-
-namespace BitcoinPriceMonitor
+﻿namespace BitcoinPriceMonitor.Profile
 {
+    using PriceMonitor;
+
     public interface IProfile
     {
         TradePriceType PriceType { get; set; }

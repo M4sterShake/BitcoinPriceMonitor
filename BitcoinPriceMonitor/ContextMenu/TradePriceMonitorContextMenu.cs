@@ -1,12 +1,11 @@
-﻿using BitcoinPriceMonitor.PriceMonitor;
-
-namespace BitcoinPriceMonitor.ContextMenu
+﻿namespace BitcoinPriceMonitor.ContextMenu
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Windows.Forms;
     using Microsoft.VisualBasic;
+    using PriceMonitor;
 
     public class TradePriceMonitorContextMenu : ITradePriceMonitorContextMenu
     {
@@ -99,6 +98,22 @@ namespace BitcoinPriceMonitor.ContextMenu
         private MenuItem[] GetFrequencyMenuItems()
         {
             List<MenuItem> menuItems = new List<MenuItem>();
+            menuItems.Add(new MenuItem("5 Seconds", (sender, e) => FrequencyEventHander(5000, (MenuItem)sender))
+            {
+                RadioCheck = true,
+                Checked = true
+            });
+            menuItems.Add(new MenuItem("10 Seconds", (sender, e) => FrequencyEventHander(10000, (MenuItem)sender)));
+            menuItems.Add(new MenuItem("30 Seconds", (sender, e) => FrequencyEventHander(30000, (MenuItem)sender)));
+            menuItems.Add(new MenuItem("1 Minute", (sender, e) => FrequencyEventHander(60000, (MenuItem)sender)));
+            menuItems.Add(new MenuItem("2 Minute", (sender, e) => FrequencyEventHander(120000, (MenuItem)sender)));
+            menuItems.Add(new MenuItem("5 Minute", (sender, e) => FrequencyEventHander(300000, (MenuItem)sender)));
+            menuItems.Add(new MenuItem("10 Minute", (sender, e) => FrequencyEventHander(600000, (MenuItem)sender)));
+            menuItems.Add(new MenuItem("15 Minute", (sender, e) => FrequencyEventHander(900000, (MenuItem)sender)));
+            menuItems.Add(new MenuItem("20 Minute", (sender, e) => FrequencyEventHander(1200000, (MenuItem)sender)));
+            menuItems.Add(new MenuItem("30 Minute", (sender, e) => FrequencyEventHander(1800000, (MenuItem)sender)));
+            menuItems.Add(new MenuItem("45 Minute", (sender, e) => FrequencyEventHander(2700000, (MenuItem)sender)));
+            menuItems.Add(new MenuItem("1 Hour", (sender, e) => FrequencyEventHander(3600000, (MenuItem)sender)));
             return menuItems.ToArray();
         }
 
@@ -134,6 +149,14 @@ namespace BitcoinPriceMonitor.ContextMenu
         private void CurrencyEventHandler(Currency currency, MenuItem sourceItem)
         {
             _tradePriceMonitor.ConvertToCurrency = currency;
+            RefreshPriceMonitor();
+            UncheckMenuItems(sourceItem.Parent.MenuItems);
+            sourceItem.Checked = !sourceItem.Checked;
+        }
+
+        private void FrequencyEventHander(int frequency, MenuItem sourceItem)
+        {
+            _tradePriceMonitor.Frequency = frequency;
             RefreshPriceMonitor();
             UncheckMenuItems(sourceItem.Parent.MenuItems);
             sourceItem.Checked = !sourceItem.Checked;

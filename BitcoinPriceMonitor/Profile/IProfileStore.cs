@@ -1,8 +1,7 @@
-﻿using BitcoinPriceMonitor.PriceMonitor;
-
-namespace BitcoinPriceMonitor
+﻿namespace BitcoinPriceMonitor.Profile
 {
     using System.Collections.Generic;
+    using PriceMonitor;
 
     public interface IProfileStore
     {
