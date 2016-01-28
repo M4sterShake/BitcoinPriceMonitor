@@ -4,6 +4,8 @@
     using BitcoinPriceMonitor;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
+    using BitcoinPriceMonitor.ContextMenu;
+    using BitcoinPriceMonitor.PriceMonitor;
 
     /// <summary>
     /// Summary description for UnitTest1

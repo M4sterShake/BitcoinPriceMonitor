@@ -1,9 +1,9 @@
-﻿namespace BitcoinPriceMonitor
-{
-    using System.Windows.Forms;
+﻿using BitcoinPriceMonitor.Observer;
 
+namespace BitcoinPriceMonitor.ContextMenu
+{
     public interface ITradePriceMonitorContextMenu : ITradePriceObserver
     {
-        ContextMenu Menu { get; }
+        System.Windows.Forms.ContextMenu Menu { get; }
     }
 }

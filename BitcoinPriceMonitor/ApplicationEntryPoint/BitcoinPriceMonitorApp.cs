@@ -1,6 +1,11 @@
-﻿namespace BitcoinPriceMonitor
+﻿using BitcoinPriceMonitor.Observer;
+using BitcoinPriceMonitor.PriceMonitor;
+
+namespace BitcoinPriceMonitor.ApplicationEntryPoint
 {
     using System;
+    using ContextMenu;
+    using NotifyIcon;
 
     public class BitcoinPriceMonitorApp : IBitcoinPriceMonitorApp
     {

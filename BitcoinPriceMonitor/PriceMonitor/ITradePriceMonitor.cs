@@ -1,4 +1,4 @@
-﻿namespace BitcoinPriceMonitor
+﻿namespace BitcoinPriceMonitor.PriceMonitor
 {
     public interface ITradePriceMonitor : ITradePriceObservable
     {

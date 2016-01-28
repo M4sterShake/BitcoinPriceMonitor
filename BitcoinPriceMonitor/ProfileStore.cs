@@ -1,4 +1,7 @@
-﻿namespace BitcoinPriceMonitor
+﻿using BitcoinPriceMonitor.Config;
+using BitcoinPriceMonitor.PriceMonitor;
+
+namespace BitcoinPriceMonitor
 {
     using System.Collections.Generic;
     using System.IO;

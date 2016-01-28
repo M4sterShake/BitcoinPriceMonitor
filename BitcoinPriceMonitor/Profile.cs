@@ -1,4 +1,6 @@
-﻿namespace BitcoinPriceMonitor
+﻿using BitcoinPriceMonitor.PriceMonitor;
+
+namespace BitcoinPriceMonitor
 {
     public class Profile : IProfile
     {

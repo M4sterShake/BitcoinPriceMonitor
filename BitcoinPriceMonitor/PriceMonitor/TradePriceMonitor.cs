@@ -1,8 +1,9 @@
-﻿namespace BitcoinPriceMonitor
+﻿namespace BitcoinPriceMonitor.PriceMonitor
 {
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading;
+    using Observer;
 
     public abstract class TradePriceMonitor : ITradePriceMonitor
     {

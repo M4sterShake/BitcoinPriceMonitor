@@ -1,4 +1,4 @@
-﻿namespace BitcoinPriceMonitor
+﻿namespace BitcoinPriceMonitor.Observer
 {
     using System;
 

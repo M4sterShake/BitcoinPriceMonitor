@@ -1,7 +1,9 @@
-﻿namespace BitcoinPriceMonitor
+﻿using BitcoinPriceMonitor.Config;
+
+namespace BitcoinPriceMonitor.PriceMonitor
 {
-    using RestSharp;
     using System;
+    using RestSharp;
 
     public class BitcoinAveragePriceMonitor : TradePriceMonitor
     {

@@ -1,9 +1,8 @@
-﻿using System.IO;
-using System.Reflection;
-
-namespace BitcoinPriceMonitor
+﻿namespace BitcoinPriceMonitor.Config
 {
     using System.Configuration;
+    using System.IO;
+    using System.Reflection;
 
     public class Settings : ISettings
     {

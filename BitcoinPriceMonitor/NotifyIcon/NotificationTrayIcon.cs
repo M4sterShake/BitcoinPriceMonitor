@@ -1,20 +1,22 @@
-﻿namespace BitcoinPriceMonitor
+﻿using BitcoinPriceMonitor.Utils;
+
+namespace BitcoinPriceMonitor.NotifyIcon
 {
     using System;
     using System.Drawing;
     using System.Drawing.Drawing2D;
     using System.Drawing.Text;
-    using System.Windows.Forms;
+    using ContextMenu;
 
     public class NotificationTrayIcon : INotificationTrayIcon
     {
         private ITradePriceMonitorContextMenu _contextMenu;
-        private NotifyIcon _notifyIcon;
+        private System.Windows.Forms.NotifyIcon _notifyIcon;
 
         public NotificationTrayIcon(ITradePriceMonitorContextMenu contextMenu)
         {
             _contextMenu = contextMenu;
-            _notifyIcon = new NotifyIcon
+            _notifyIcon = new System.Windows.Forms.NotifyIcon
             {
                 Visible = true,
                 ContextMenu = _contextMenu.Menu,

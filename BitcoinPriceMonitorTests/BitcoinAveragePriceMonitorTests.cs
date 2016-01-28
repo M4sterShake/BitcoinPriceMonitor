@@ -2,10 +2,12 @@
 {
     using System;
     using System.Threading;
-    using BitcoinPriceMonitor;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
     using RestSharp;
+    using BitcoinPriceMonitor.Config;
+    using BitcoinPriceMonitor.Observer;
+    using BitcoinPriceMonitor.PriceMonitor;
 
     [TestClass]
     public class BitcoinAveragePriceMonitorTests

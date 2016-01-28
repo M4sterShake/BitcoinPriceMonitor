@@ -1,4 +1,6 @@
-﻿namespace BitcoinPriceMonitor
+﻿using BitcoinPriceMonitor.Config;
+
+namespace BitcoinPriceMonitor.PriceMonitor
 {
     using RestSharp;
 

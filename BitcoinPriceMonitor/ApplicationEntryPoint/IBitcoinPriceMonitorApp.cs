@@ -1,4 +1,4 @@
-﻿namespace BitcoinPriceMonitor
+﻿namespace BitcoinPriceMonitor.ApplicationEntryPoint
 {
     public interface IBitcoinPriceMonitorApp
     {

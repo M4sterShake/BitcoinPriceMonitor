@@ -1,4 +1,7 @@
-﻿namespace BitcoinPriceMonitor
+﻿using BitcoinPriceMonitor.ApplicationEntryPoint;
+using BitcoinPriceMonitor.Config;
+
+namespace BitcoinPriceMonitor
 {
     using System;
     using System.Windows.Forms;

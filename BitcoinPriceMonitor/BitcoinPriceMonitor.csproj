@@ -66,8 +66,8 @@
     <Compile Include="IProfile.cs" />
     <Compile Include="IProfileStore.cs" />
     <Compile Include="PriceMonitor\BitcoinAveragePriceMonitor.cs" />
-    <Compile Include="BitcoinPriceMonitorApp\BitcoinPriceMonitorApp.cs" />
-    <Compile Include="BitcoinPriceMonitorApp\IBitcoinPriceMonitorApp.cs" />
+    <Compile Include="ApplicationEntryPoint\BitcoinPriceMonitorApp.cs" />
+    <Compile Include="ApplicationEntryPoint\IBitcoinPriceMonitorApp.cs" />
     <Compile Include="Observer\ITradePriceObservable.cs" />
     <Compile Include="Observer\ITradePriceObserver.cs" />
     <Compile Include="ContextMenu\ITradePriceMonitorContextMenu.cs" />
@@ -75,7 +75,7 @@
     <Compile Include="PriceMonitor\TradePriceMonitorFactory.cs" />
     <Compile Include="Profile.cs" />
     <Compile Include="ProfileStore.cs" />
-    <Compile Include="Settings\ISettings.cs" />
+    <Compile Include="Config\ISettings.cs" />
     <Compile Include="PriceMonitor\ITradePriceMonitor.cs" />
     <Compile Include="IocRegistry.cs" />
     <Compile Include="Utils\TaskBarUtils.cs" />
@@ -83,7 +83,7 @@
     <Compile Include="PriceMonitor\TradePriceMonitor.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Settings\Settings.cs" />
+    <Compile Include="Config\Settings.cs" />
     <Compile Include="NotifyIcon\NotificationTrayIcon.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

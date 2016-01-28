@@ -1,4 +1,10 @@
-﻿namespace BitcoinPriceMonitor
+﻿using BitcoinPriceMonitor.ApplicationEntryPoint;
+using BitcoinPriceMonitor.Config;
+using BitcoinPriceMonitor.ContextMenu;
+using BitcoinPriceMonitor.NotifyIcon;
+using BitcoinPriceMonitor.PriceMonitor;
+
+namespace BitcoinPriceMonitor
 {
     using RestSharp;
     using StructureMap;

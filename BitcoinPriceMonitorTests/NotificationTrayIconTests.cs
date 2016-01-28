@@ -2,12 +2,13 @@
 { 
     using System;
     using System.Windows.Forms;
-    using BitcoinPriceMonitor;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
     using System.Drawing;
     using System.Reflection;
     using System.Security.Cryptography;
+    using BitcoinPriceMonitor.ContextMenu;
+    using BitcoinPriceMonitor.NotifyIcon;
 
     /// <summary>
     /// Summary description for NotificationTrayIconTests

@@ -1,9 +1,9 @@
-﻿using System;
-using System.Runtime.InteropServices;
-using Microsoft.VisualStudio.OLE.Interop;
-
-namespace BitcoinPriceMonitor
+﻿namespace BitcoinPriceMonitor.Utils
 {
+    using System;
+    using System.Runtime.InteropServices;
+    using Microsoft.VisualStudio.OLE.Interop;
+
     internal class TaskBarUtils
     {
         public static void RefreshNotificationArea()

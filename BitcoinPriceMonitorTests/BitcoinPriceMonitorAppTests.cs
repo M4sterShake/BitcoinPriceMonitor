@@ -1,8 +1,11 @@
 ﻿namespace BitcoinPriceMonitorTests
 {
-    using BitcoinPriceMonitor;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
+    using BitcoinPriceMonitor.ApplicationEntryPoint;
+    using BitcoinPriceMonitor.ContextMenu;
+    using BitcoinPriceMonitor.NotifyIcon;
+    using BitcoinPriceMonitor.PriceMonitor;
 
     [TestClass]
     public class BitcoinPriceMonitorAppTests
