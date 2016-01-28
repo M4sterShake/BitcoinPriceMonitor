@@ -14,8 +14,12 @@
         [TestMethod]
         public void BitcoinAveragePriceMonitor_ConstructorTest()
         {
-            // Arrange/Act
-            var target = new BitcoinAveragePriceMonitor(new RestClient());
+            // Arrange
+            var mockSettingsThatReturnsFakeBitcoinAverageUrl =new Mock<ISettings>();
+            mockSettingsThatReturnsFakeBitcoinAverageUrl.SetupGet(m => m.BitcoinAverageApiUrl).Returns("http://example.com");
+
+            //Act
+            var target = new BitcoinAveragePriceMonitor(new RestClient(), mockSettingsThatReturnsFakeBitcoinAverageUrl.Object);
 
             // Assert
             Assert.AreEqual(Currency.USD, target.ConvertToCurrency);
@@ -29,13 +33,15 @@
             // Arrange
             var expectedResult = 2.5; ;
             var expectedResultString = expectedResult.ToString();
+            var mockSettingsThatReturnsFakeBitcoinAverageUrl = new Mock<ISettings>();
+            mockSettingsThatReturnsFakeBitcoinAverageUrl.SetupGet(m => m.BitcoinAverageApiUrl).Returns("http://example.com");
 
             var mockResponseWithExpectedResult = new Mock<IRestResponse>();
             mockResponseWithExpectedResult.SetupGet(m => m.Content).Returns(expectedResultString);
             var mockRestClientThatReturnsMockResponse = new Mock<IRestClient>();
             mockRestClientThatReturnsMockResponse.Setup(m => m.Execute(It.IsAny<IRestRequest>()))
                 .Returns(mockResponseWithExpectedResult.Object);
-            var target = new BitcoinAveragePriceMonitor(mockRestClientThatReturnsMockResponse.Object);
+            var target = new BitcoinAveragePriceMonitor(mockRestClientThatReturnsMockResponse.Object, mockSettingsThatReturnsFakeBitcoinAverageUrl.Object);
             target.Frequency = 100;
 
             // Act
@@ -61,7 +67,9 @@
             var mockRestClientThatReturnsMockResponse = new Mock<IRestClient>();
             mockRestClientThatReturnsMockResponse.Setup(m => m.Execute(It.IsAny<IRestRequest>()))
                 .Returns(mockResponseWithExpectedResult.Object);
-            var target = new BitcoinAveragePriceMonitor(mockRestClientThatReturnsMockResponse.Object);
+            var mockSettingsThatReturnsFakeBitcoinAverageUrl = new Mock<ISettings>();
+            mockSettingsThatReturnsFakeBitcoinAverageUrl.SetupGet(m => m.BitcoinAverageApiUrl).Returns("http://example.com");
+            var target = new BitcoinAveragePriceMonitor(mockRestClientThatReturnsMockResponse.Object, mockSettingsThatReturnsFakeBitcoinAverageUrl.Object);
             target.Frequency = 100;
 
             // Act
@@ -85,6 +93,8 @@
             // Arrange
             var expectedResult = 2.5; ;
             var expectedResultString = expectedResult.ToString();
+            var mockSettingsThatReturnsFakeBitcoinAverageUrl = new Mock<ISettings>();
+            mockSettingsThatReturnsFakeBitcoinAverageUrl.SetupGet(m => m.BitcoinAverageApiUrl).Returns("http://example.com");
 
             var mockResponseWithExpectedResult = new Mock<IRestResponse>();
             mockResponseWithExpectedResult.SetupGet(m => m.Content).Returns(expectedResultString);
@@ -92,7 +102,7 @@
             mockRestClientThatReturnsMockResponse.Setup(m => m.Execute(It.IsAny<IRestRequest>()))
                 .Returns(mockResponseWithExpectedResult.Object);
             var mockObserver = new Mock<ITradePriceObserver>();
-            var target = new BitcoinAveragePriceMonitor(mockRestClientThatReturnsMockResponse.Object);
+            var target = new BitcoinAveragePriceMonitor(mockRestClientThatReturnsMockResponse.Object, mockSettingsThatReturnsFakeBitcoinAverageUrl.Object);
             target.Subscribe(mockObserver.Object);
             target.Frequency = 100;
 
@@ -116,6 +126,8 @@
             var expectedResult = 2.5; ;
             var expectedResultString = expectedResult.ToString();
             var observerGuid = Guid.NewGuid();
+            var mockSettingsThatReturnsFakeBitcoinAverageUrl = new Mock<ISettings>();
+            mockSettingsThatReturnsFakeBitcoinAverageUrl.SetupGet(m => m.BitcoinAverageApiUrl).Returns("http://example.com");
 
             var mockResponseWithExpectedResult = new Mock<IRestResponse>();
             mockResponseWithExpectedResult.SetupGet(m => m.Content).Returns(expectedResultString);
@@ -124,7 +136,7 @@
                 .Returns(mockResponseWithExpectedResult.Object);
             var mockObserver = new Mock<ITradePriceObserver>();
             mockObserver.SetupGet(m => m.ObserverId).Returns(observerGuid);
-            var target = new BitcoinAveragePriceMonitor(mockRestClientThatReturnsMockResponse.Object);
+            var target = new BitcoinAveragePriceMonitor(mockRestClientThatReturnsMockResponse.Object, mockSettingsThatReturnsFakeBitcoinAverageUrl.Object);
             target.Subscribe(mockObserver.Object);
             target.Frequency = 100;
 
@@ -147,7 +159,9 @@
         public void BitcoinAveragePriceMonitor_ConvertToCurrencyTest()
         {
             // Arrange
-            var target = new BitcoinAveragePriceMonitor(new RestClient());
+            var mockSettingsThatReturnsFakeBitcoinAverageUrl = new Mock<ISettings>();
+            mockSettingsThatReturnsFakeBitcoinAverageUrl.SetupGet(m => m.BitcoinAverageApiUrl).Returns("http://example.com");
+            var target = new BitcoinAveragePriceMonitor(new RestClient(), mockSettingsThatReturnsFakeBitcoinAverageUrl.Object);
             var originalCurrency = target.ConvertToCurrency;
             var expectedCurrency = Currency.GBP;
             
@@ -163,7 +177,9 @@
         public void BitcoinAveragePriceMonitor_PriceTypeTest()
         {
             // Arrange
-            var target = new BitcoinAveragePriceMonitor(new RestClient());
+            var mockSettingsThatReturnsFakeBitcoinAverageUrl = new Mock<ISettings>();
+            mockSettingsThatReturnsFakeBitcoinAverageUrl.SetupGet(m => m.BitcoinAverageApiUrl).Returns("http://example.com");
+            var target = new BitcoinAveragePriceMonitor(new RestClient(), mockSettingsThatReturnsFakeBitcoinAverageUrl.Object);
             var originalPriceType = target.PriceType;
             var expectedPriceType = TradePriceType.Bid;
 
@@ -179,7 +195,9 @@
         public void BitcoinAveragePriceMonitor_FrequencyTest()
         {
             // Arrange
-            var target = new BitcoinAveragePriceMonitor(new RestClient());
+            var mockSettingsThatReturnsFakeBitcoinAverageUrl = new Mock<ISettings>();
+            mockSettingsThatReturnsFakeBitcoinAverageUrl.SetupGet(m => m.BitcoinAverageApiUrl).Returns("http://example.com");
+            var target = new BitcoinAveragePriceMonitor(new RestClient(), mockSettingsThatReturnsFakeBitcoinAverageUrl.Object);
             var originalFrequency = target.Frequency;
             var expectedFrequency = 55000;
 

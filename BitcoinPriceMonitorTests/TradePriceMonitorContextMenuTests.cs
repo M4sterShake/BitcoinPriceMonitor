@@ -20,13 +20,13 @@
 
             // Act
             var target = new TradePriceMonitorContextMenu(mockTradePriceMonitor.Object, mockProfileStore.Object);
-            MenuItem settingsMenuItem = null;
+            MenuItem currencyMenuItem = null;
             MenuItem exitMenuItem = null;
             foreach (MenuItem item in target.Menu.MenuItems)
             {
-                if (item.Text == "Settings")
+                if (item.Text == "Currency")
                 {
-                    settingsMenuItem = item;
+                    currencyMenuItem = item;
                 }
                 if (item.Text == "Exit")
                 {
@@ -36,7 +36,7 @@
 
             // Assert
             Assert.IsTrue(target.Menu.MenuItems.Count > 1);
-            Assert.IsNotNull(settingsMenuItem);
+            Assert.IsNotNull(currencyMenuItem);
             Assert.IsNotNull(exitMenuItem);
         }
 
@@ -88,15 +88,9 @@
             var currencyToSelect = Currency.EUR.ToString();
             foreach (MenuItem item in target.Menu.MenuItems)
             {
-                if (item.Text == "Settings")
+                if (item.Text == "Currency")
                 {
-                    foreach (MenuItem subItem in item.MenuItems)
-                    {
-                        if (subItem.Text == "Currency")
-                        {
-                            currencyMenuItems = subItem.MenuItems;
-                        }
-                    }
+                    currencyMenuItems = item.MenuItems;
                 }
             }
 
@@ -136,15 +130,9 @@
             var priceTypeToSelect = TradePriceType.Bid.ToString();
             foreach (MenuItem item in target.Menu.MenuItems)
             {
-                if (item.Text == "Settings")
+                if (item.Text == "Trade Price Type")
                 {
-                    foreach (MenuItem subItem in item.MenuItems)
-                    {
-                        if (subItem.Text == "Trade Price Type")
-                        {
-                            tradePriceTypeMenuItems = subItem.MenuItems;
-                        }
-                    }
+                    tradePriceTypeMenuItems = item.MenuItems;
                 }
             }
 
