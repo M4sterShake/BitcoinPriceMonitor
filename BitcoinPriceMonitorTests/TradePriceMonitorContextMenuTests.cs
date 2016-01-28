@@ -16,9 +16,10 @@
         {
             // Arrange
             var mockTradePriceMonitor = new Mock<ITradePriceMonitor>();
+            var mockProfileStore = new Mock<IProfileStore>();
 
             // Act
-            var target = new TradePriceMonitorContextMenu(mockTradePriceMonitor.Object);
+            var target = new TradePriceMonitorContextMenu(mockTradePriceMonitor.Object, mockProfileStore.Object);
             MenuItem settingsMenuItem = null;
             MenuItem exitMenuItem = null;
             foreach (MenuItem item in target.Menu.MenuItems)
@@ -44,7 +45,8 @@
         {
             // Arrange
             var mockTradePriceMonitor = new Mock<ITradePriceMonitor>();
-            var target = new TradePriceMonitorContextMenu(mockTradePriceMonitor.Object);
+            var mockProfileStore = new Mock<IProfileStore>();
+            var target = new TradePriceMonitorContextMenu(mockTradePriceMonitor.Object, mockProfileStore.Object);
 
             //Act
             var observerId = target.ObserverId;
@@ -59,7 +61,8 @@
         {
             // Arrange
             var mockTradePriceMonitor = new Mock<ITradePriceMonitor>();
-            var target = new TradePriceMonitorContextMenu(mockTradePriceMonitor.Object);
+            var mockProfileStore = new Mock<IProfileStore>();
+            var target = new TradePriceMonitorContextMenu(mockTradePriceMonitor.Object, mockProfileStore.Object);
             var originalPriceItemText = target.Menu.MenuItems.Find("BitcoinPrice", false)[0].Text;
             var updatePrice = 2.5;
 
@@ -77,7 +80,8 @@
         {
             // Arrange
             var mockTradePriceMonitor = new Mock<ITradePriceMonitor>();
-            var target = new TradePriceMonitorContextMenu(mockTradePriceMonitor.Object);
+            var mockProfileStore = new Mock<IProfileStore>();
+            var target = new TradePriceMonitorContextMenu(mockTradePriceMonitor.Object, mockProfileStore.Object);
             Menu.MenuItemCollection currencyMenuItems = null;
             MenuItem euroMenuItem = null;
             bool euroMenuItemOriginallyChecked = true;
@@ -124,7 +128,8 @@
         {
             // Arrange
             var mockTradePriceMonitor = new Mock<ITradePriceMonitor>();
-            var target = new TradePriceMonitorContextMenu(mockTradePriceMonitor.Object);
+            var mockProfileStore = new Mock<IProfileStore>();
+            var target = new TradePriceMonitorContextMenu(mockTradePriceMonitor.Object, mockProfileStore.Object);
             Menu.MenuItemCollection tradePriceTypeMenuItems = null;
             MenuItem bidMenuItem = null;
             bool bidMenuItemOriginallyChecked = true;

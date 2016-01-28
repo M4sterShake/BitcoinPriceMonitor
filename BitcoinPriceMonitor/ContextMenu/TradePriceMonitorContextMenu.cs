@@ -1,4 +1,6 @@
-﻿namespace BitcoinPriceMonitor
+﻿using Microsoft.VisualBasic;
+
+namespace BitcoinPriceMonitor
 {
     using System;
     using System.Collections.Generic;
@@ -9,11 +11,16 @@
     {
         public ContextMenu Menu { get; private set; }
 
-        private ITradePriceMonitor _tradePriceMonitor;
+        private const string BitcoinPriceMenuItemName = "BitcoinPrice";
+        private const string LoadProfileMenuItemName = "LoadProfiles";
 
-        public TradePriceMonitorContextMenu(ITradePriceMonitor tradePriceMonitor)
+        private ITradePriceMonitor _tradePriceMonitor;
+        private IProfileStore _profileStore;
+        
+        public TradePriceMonitorContextMenu(ITradePriceMonitor tradePriceMonitor, IProfileStore profileStore)
         {
             _tradePriceMonitor = tradePriceMonitor;
+            _profileStore = profileStore;
             Menu = GetMenu();
         }
 
@@ -22,7 +29,6 @@
         private ContextMenu GetMenu()
         {
             var contextMenu = new ContextMenu();
-            var settingsMenuItem = new MenuItem("Settings");
 
             var priceTypeMenuItem = new MenuItem("Trade Price Type");
             priceTypeMenuItem.MenuItems.AddRange(GetTradePriceTypeMenuItems());
@@ -33,16 +39,25 @@
             var frequencyMenuItem = new MenuItem("Price Check Frequency");
             frequencyMenuItem.MenuItems.AddRange(GetFrequencyMenuItems());
 
-            settingsMenuItem.MenuItems.Add(priceTypeMenuItem);
-            settingsMenuItem.MenuItems.Add(currencyMenuItem);
-            settingsMenuItem.MenuItems.Add(frequencyMenuItem);
+            var loadProfileMenuItem = new MenuItem("Load Settings")
+            {
+                Name = LoadProfileMenuItemName
+            };
+            loadProfileMenuItem.MenuItems.AddRange(GetLoadProfileMenuItems());
+            var saveProfileMenuItem = new MenuItem("Save Settings...", (sender, e) => SaveProfileEventHandler());
 
             contextMenu.MenuItems.Add(new MenuItem("Getting bitcoin price...")
             {
-                Name = "BitcoinPrice"
+                Name = BitcoinPriceMenuItemName
             });
             contextMenu.MenuItems.Add("-");
-            contextMenu.MenuItems.Add(settingsMenuItem);
+            contextMenu.MenuItems.Add(priceTypeMenuItem);
+            contextMenu.MenuItems.Add(currencyMenuItem);
+            contextMenu.MenuItems.Add(frequencyMenuItem);
+            contextMenu.MenuItems.Add("-");
+            contextMenu.MenuItems.Add(loadProfileMenuItem);
+            contextMenu.MenuItems.Add(saveProfileMenuItem);
+            contextMenu.MenuItems.Add("-");
             contextMenu.MenuItems.Add("Exit", ExitEventHandler);
 
             return contextMenu;
@@ -86,6 +101,18 @@
             return menuItems.ToArray();
         }
 
+        private MenuItem[] GetLoadProfileMenuItems()
+        {
+            return _profileStore.Profiles?.Select(p => new MenuItem(p, (sender, e) => LoadProfileEventHandler(p))).ToArray();
+        }
+
+        private void RefreshLoadProfileMenuItems()
+        {
+            var loadProfileMenuItem = Menu.MenuItems.Find(LoadProfileMenuItemName, true);
+            loadProfileMenuItem?[0]?.MenuItems.Clear();
+            loadProfileMenuItem?[0]?.MenuItems.AddRange(GetLoadProfileMenuItems());
+        }
+
         private void UncheckMenuItems(Menu.MenuItemCollection menuItems)
         {
             foreach (MenuItem m in menuItems)
@@ -109,6 +136,25 @@
             RefreshPriceMonitor();
             UncheckMenuItems(sourceItem.Parent.MenuItems);
             sourceItem.Checked = !sourceItem.Checked;
+        }
+
+        private void LoadProfileEventHandler(string profileName)
+        {
+            _tradePriceMonitor.StopMonitoring();
+            var newTradePriceMonitor = _profileStore.LoadProfile(profileName);
+            _tradePriceMonitor.TrasferSubscription(newTradePriceMonitor);
+            _tradePriceMonitor = newTradePriceMonitor;
+            _tradePriceMonitor.StartMonitoring();
+        }
+
+        private void SaveProfileEventHandler()
+        {
+            string profileName = Interaction.InputBox("Please enter a name for the profile", "Save Profile", string.Empty);
+            if (profileName != string.Empty)
+            {
+                _profileStore.SaveProfile(_tradePriceMonitor, profileName);
+                RefreshLoadProfileMenuItems();
+            }
         }
 
         private void ExitEventHandler(object sender, EventArgs e)

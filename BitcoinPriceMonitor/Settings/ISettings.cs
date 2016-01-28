@@ -1,8 +1,8 @@
 ﻿namespace BitcoinPriceMonitor
 {
-    interface ISettings
+    public interface ISettings
     {
-        string Get(string name);
-        void Set(string name, string value);
+        string ProfileStoreDirectory { get; }
+        string BitcoinAverageApiUrl { get; }
     }
 }

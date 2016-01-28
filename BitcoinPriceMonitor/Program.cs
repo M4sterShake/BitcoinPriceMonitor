@@ -21,7 +21,7 @@
 
         private static void ConfigureIocContainer()
         {
-            var container = new Container(new IocRegistry());
+            var container = new Container(new IocRegistry(new Settings()));
             IBitcoinPriceMonitorApp app = container.GetInstance<IBitcoinPriceMonitorApp>();
             app.Start();
         }

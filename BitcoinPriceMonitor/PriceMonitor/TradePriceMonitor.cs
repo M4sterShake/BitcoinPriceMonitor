@@ -12,7 +12,7 @@
         public long Frequency { get; set; } = 2000;
 
         private Timer _priceCheckTimer;
-        private List<ITradePriceObserver> observers = new List<ITradePriceObserver>();
+        private IList<ITradePriceObserver> _subscribers = new List<ITradePriceObserver>();
 
         public TradePriceMonitor()
         {
@@ -36,7 +36,7 @@
 
         private void Notify(double price)
         {
-            foreach (var observer in observers)
+            foreach (var observer in _subscribers)
             {
                 observer.Update(price);
             }
@@ -44,14 +44,23 @@
 
         public void Subscribe(ITradePriceObserver observer)
         {
-            observers.Add(observer);
+            _subscribers.Add(observer);
         }
 
         public void Unsubscribe(ITradePriceObserver observer)
         {
-            observers.Remove((from o in observers
+            _subscribers.Remove((from o in _subscribers
                               where o.ObserverId == observer.ObserverId
                               select o).First());
+        }
+
+        public void TrasferSubscription(ITradePriceObservable observable)
+        {
+            foreach (var observer in _subscribers.ToArray())
+            {
+                observable.Subscribe(observer);
+                Unsubscribe(observer);
+            }
         }
     }
 

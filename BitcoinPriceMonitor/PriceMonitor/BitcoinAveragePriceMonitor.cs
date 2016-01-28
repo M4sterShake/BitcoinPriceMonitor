@@ -6,9 +6,18 @@
     public class BitcoinAveragePriceMonitor : TradePriceMonitor
     {
         private IRestClient _apiClient;
-        public BitcoinAveragePriceMonitor(IRestClient apiClient)
+        private ISettings _settings;
+
+        public BitcoinAveragePriceMonitor()
+        {
+
+        }
+
+        public BitcoinAveragePriceMonitor(IRestClient apiClient, ISettings settings)
         {
             _apiClient = apiClient;
+            _settings = settings;
+            apiClient.BaseUrl = new Uri(settings.BitcoinAverageApiUrl);
         }
 
         protected override double checkPrice()
