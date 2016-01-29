@@ -142,7 +142,7 @@ namespace BitcoinPriceMonitor.ContextMenu
             var currencyMenuItem = Menu.MenuItems.Find(CurrencyMenuItemName, true)[0];
             foreach (MenuItem item in currencyMenuItem.MenuItems)
             {
-                item.Checked = item.Text == _tradePriceMonitor.ConvertToCurrency.ToString();
+                item.Checked = item.Text == _tradePriceMonitor.TargetCurrency.ToString();
             }
         }
 
@@ -191,7 +191,7 @@ namespace BitcoinPriceMonitor.ContextMenu
 
         private void CurrencyEventHandler(Currency currency, MenuItem sourceItem)
         {
-            _tradePriceMonitor.ConvertToCurrency = currency;
+            _tradePriceMonitor.TargetCurrency = currency;
             MenuItemCheckedEventHandler(sourceItem);
         }
 

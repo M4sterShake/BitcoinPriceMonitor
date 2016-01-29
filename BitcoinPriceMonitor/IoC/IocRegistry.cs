@@ -20,11 +20,7 @@
             var profileStore = profileContainer.GetInstance<IProfileStore>();
             var persistenceProfile = profileStore.LoadProfile(settings.PersistanceProfileName);
 
-            For<ITradePriceMonitor>().Use<BitcoinAveragePriceMonitor>()
-                .Ctor<IRestClient>().Is(new RestClient())
-                .Ctor<Currency>().Is(persistenceProfile.ConvertToCurrency)
-                .Ctor<TradePriceType>().Is(persistenceProfile.PriceType)
-                .Ctor<int>().Is(persistenceProfile.Frequency)
+            For<ITradePriceMonitor>().Use(persistenceProfile)
                 .Name = "DefaultPriceMonitor";
             For<INotificationTrayIcon>().Use<NotificationTrayIcon>();
             For<ITradePriceMonitorContextMenu>().Use<TradePriceMonitorContextMenu>()

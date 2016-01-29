@@ -24,7 +24,7 @@
             var target = new BitcoinAveragePriceMonitor(new RestClient(), mockSettingsThatReturnsFakeBitcoinAverageUrl.Object);
 
             // Assert
-            Assert.AreEqual(Currency.USD, target.ConvertToCurrency);
+            Assert.AreEqual(Currency.USD, target.TargetCurrency);
             Assert.AreEqual(5000, target.Frequency);
             Assert.AreEqual(TradePriceType.Last, target.PriceType);
         }
@@ -118,7 +118,7 @@
             target.StopMonitoring();
 
             // Assert
-            mockObserver.Verify(m => m.Update(new TradePrice(expectedResult, target.ConvertToCurrency)), Times.Exactly(2));
+            mockObserver.Verify(m => m.Update(new TradePrice(expectedResult, target.TargetCurrency)), Times.Exactly(2));
         }
 
         [TestMethod]
@@ -154,7 +154,7 @@
             target.StopMonitoring();
 
             // Assert
-            mockObserver.Verify(m => m.Update(new TradePrice(expectedResult, target.ConvertToCurrency)), Times.Exactly(2));
+            mockObserver.Verify(m => m.Update(new TradePrice(expectedResult, target.TargetCurrency)), Times.Exactly(2));
         }
 
         [TestMethod]
@@ -164,15 +164,15 @@
             var mockSettingsThatReturnsFakeBitcoinAverageUrl = new Mock<ISettings>();
             mockSettingsThatReturnsFakeBitcoinAverageUrl.SetupGet(m => m.BitcoinAverageApiUrl).Returns("http://example.com");
             var target = new BitcoinAveragePriceMonitor(new RestClient(), mockSettingsThatReturnsFakeBitcoinAverageUrl.Object);
-            var originalCurrency = target.ConvertToCurrency;
+            var originalCurrency = target.TargetCurrency;
             var expectedCurrency = Currency.GBP;
             
             // Act
-            target.ConvertToCurrency = expectedCurrency;
+            target.TargetCurrency = expectedCurrency;
 
             // Assert
             Assert.AreEqual(Currency.USD, originalCurrency);
-            Assert.AreEqual(expectedCurrency, target.ConvertToCurrency);
+            Assert.AreEqual(expectedCurrency, target.TargetCurrency);
         }
 
         [TestMethod]

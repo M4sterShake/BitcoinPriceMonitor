@@ -8,7 +8,7 @@
 
     public abstract class TradePriceMonitor : ITradePriceMonitor
     {
-        public Currency ConvertToCurrency { get; set; } = Currency.USD;
+        public Currency TargetCurrency { get; set; } = Currency.USD;
         public TradePriceType PriceType { get; set; } = TradePriceType.Last;
         public double CurrentPrice { get; private set; }
         public int Frequency { get; set; } = 5000;
@@ -36,7 +36,7 @@
         {
             foreach (var observer in _subscribers)
             {
-                observer.Update(new TradePrice(price, ConvertToCurrency));
+                observer.Update(new TradePrice(price, TargetCurrency));
             }
         }
 

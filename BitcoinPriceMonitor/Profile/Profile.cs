@@ -12,7 +12,7 @@
         public Profile(ITradePriceMonitor priceMonitor)
         {
             PriceType = priceMonitor.PriceType;
-            ConvertToCurrency = priceMonitor.ConvertToCurrency;
+            ConvertToCurrency = priceMonitor.TargetCurrency;
             Frequency = priceMonitor.Frequency;
             MonitorType = priceMonitor.GetType().Name;
         }

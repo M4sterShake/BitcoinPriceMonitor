@@ -4,33 +4,20 @@
     using RestSharp;
     using Config;
 
-    public class BitcoinAveragePriceMonitor : TradePriceMonitor
+    public class BitcoinAveragePriceMonitor : RestTradePriceMonitor
     {
-        private readonly IRestClient _apiClient;
-        private readonly ISettings _settings;
-
         public BitcoinAveragePriceMonitor(IRestClient apiClient, ISettings settings)
+            : base(apiClient, settings)
         {
-            _apiClient = apiClient;
-            _settings = settings;
-            apiClient.BaseUrl = new Uri(_settings.BitcoinAverageApiUrl);
-        }
-
-        public BitcoinAveragePriceMonitor(IRestClient apiClient, ISettings settings, TradePriceType priceType,
-            Currency convertToCurrency, int frequency)
-            : this(apiClient, settings)
-        {
-            PriceType = priceType;
-            ConvertToCurrency = convertToCurrency;
-            Frequency = frequency;
+            ApiClient.BaseUrl = new Uri(Settings.BitcoinAverageApiUrl);
         }
         
         protected override double CheckPrice()
         {
             var request = new RestRequest("ticker/global/{currency}/{priceType}", Method.GET);
-            request.AddUrlSegment("currency", Enum.GetName(typeof(Currency), ConvertToCurrency));
+            request.AddUrlSegment("currency", Enum.GetName(typeof(Currency), TargetCurrency));
             request.AddUrlSegment("priceType", Enum.GetName(typeof(TradePriceType), PriceType).ToLower());
-            IRestResponse response = _apiClient.Execute(request);
+            IRestResponse response = ApiClient.Execute(request);
             double result;
             
             return double.TryParse(response.Content, out result) ? result : -1;
