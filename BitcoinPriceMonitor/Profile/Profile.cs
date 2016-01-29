@@ -19,7 +19,7 @@
 
         public TradePriceType PriceType { get; set; }
         public Currency ConvertToCurrency { get; set; }
-        public long Frequency { get; set; }
+        public int Frequency { get; set; }
         public string MonitorType { get; set; }
     }
 }

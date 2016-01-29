@@ -11,7 +11,7 @@
         public Currency ConvertToCurrency { get; set; } = Currency.USD;
         public TradePriceType PriceType { get; set; } = TradePriceType.Last;
         public double CurrentPrice { get; private set; }
-        public long Frequency { get; set; } = 5000;
+        public int Frequency { get; set; } = 5000;
 
         private Timer _priceCheckTimer;
         private readonly IList<ITradePriceObserver> _subscribers = new List<ITradePriceObserver>();

@@ -8,5 +8,6 @@
         IEnumerable<string> Profiles { get; }
         ITradePriceMonitor LoadProfile(string profileName);
         void SaveProfile(ITradePriceMonitor profile, string profileName);
+        void SavePersistenceProfile(ITradePriceMonitor profile);
     }
 }

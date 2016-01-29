@@ -4,5 +4,6 @@
     {
         string ProfileStoreDirectory { get; }
         string BitcoinAverageApiUrl { get; }
+        string PersistanceProfileName { get; }
     }
 }

@@ -12,7 +12,7 @@
         private readonly ISettings _settings;
         private readonly ITradePriceMonitorFactory _monitorFactory;
         private const string ProfileHeading = "_profile_";
-
+        
         public ProfileStore(ISettings settings, ITradePriceMonitorFactory monitorFactory)
         {
             _settings = settings;
@@ -28,7 +28,8 @@
                         .Where(p =>
                         {
                             var fileName = Path.GetFileName(p);
-                            return fileName != null && fileName.StartsWith(ProfileHeading);
+                            return fileName != null && fileName.StartsWith(ProfileHeading) &&
+                                   !fileName.StartsWith($"{ProfileHeading}{_settings.PersistanceProfileName}");
                         })
                         .Select(p => Path.GetFileName(p)?.Replace(ProfileHeading, string.Empty));
             }
@@ -46,6 +47,11 @@
             var serializer = new JavaScriptSerializer();
             var serializedProfile = serializer.Serialize(new Profile(profile));
             File.WriteAllText(GetProfileFileName(profileName), serializedProfile);
+        }
+
+        public void SavePersistenceProfile(ITradePriceMonitor profile)
+        {
+            SaveProfile(profile, _settings.PersistanceProfileName);
         }
 
         private string GetProfileFileName(string profileName)

@@ -8,5 +8,6 @@
     {
         public string ProfileStoreDirectory => Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
         public string BitcoinAverageApiUrl => ConfigurationManager.AppSettings["BitcoinAverageApiUrl"];
+        public string PersistanceProfileName => "xxCURRENTxx";
     }
 }

@@ -24,7 +24,7 @@ namespace BitcoinPriceMonitor
 
         private static void ConfigureIocContainer()
         {
-            var container = new Container(new IocRegistry(new Settings()));
+            var container = new Container(new IocRegistry());
             IBitcoinPriceMonitorApp app = container.GetInstance<IBitcoinPriceMonitorApp>();
             app.Start();
         }

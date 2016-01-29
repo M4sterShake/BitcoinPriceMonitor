@@ -7,12 +7,16 @@
     using Microsoft.VisualBasic;
     using PriceMonitor;
     using Profile;
+    using System.Collections;
 
     public class TradePriceMonitorContextMenu : ITradePriceMonitorContextMenu
     {
         public ContextMenu Menu { get; }
 
         private const string BitcoinPriceMenuItemName = "BitcoinPrice";
+        private const string CurrencyMenuItemName = "Currecy";
+        private const string PriceTypeMenuItemName = "PriceType";
+        private const string FrequencyMenuItemName = "Frequency";
         private const string LoadProfileMenuItemName = "LoadProfiles";
 
         private ITradePriceMonitor _tradePriceMonitor;
@@ -38,6 +42,7 @@
             _tradePriceMonitor = tradePriceMonitor;
             _profileStore = profileStore;
             Menu = GetMenu();
+            InitMenuOptions();
         }
 
         public Guid ObserverId { get; } = Guid.NewGuid();
@@ -46,13 +51,22 @@
         {
             var contextMenu = new ContextMenu();
 
-            var priceTypeMenuItem = new MenuItem("Trade Price Type");
+            var priceTypeMenuItem = new MenuItem("Trade Price Type")
+            {
+                Name = PriceTypeMenuItemName
+            };
             priceTypeMenuItem.MenuItems.AddRange(GetTradePriceTypeMenuItems());
 
-            var currencyMenuItem = new MenuItem("Currency");
+            var currencyMenuItem = new MenuItem("Currency")
+            {
+                Name = CurrencyMenuItemName
+            };
             currencyMenuItem.MenuItems.AddRange(GetCurrencyMenuItems());
             
-            var frequencyMenuItem = new MenuItem("Price Check Frequency");
+            var frequencyMenuItem = new MenuItem("Price Check Frequency")
+            {
+                Name = FrequencyMenuItemName
+            };
             frequencyMenuItem.MenuItems.AddRange(GetFrequencyMenuItems());
 
             var loadProfileMenuItem = new MenuItem("Load Settings")
@@ -83,7 +97,7 @@
         {
             return Enum.GetValues(typeof (Currency)).Cast<Currency>().Select(currency => new MenuItem(currency.ToString(), (sender, e) => CurrencyEventHandler(currency, (MenuItem) sender))
             {
-                RadioCheck = true, Checked = _tradePriceMonitor.ConvertToCurrency == currency
+                RadioCheck = true
             }).ToArray();
         }
 
@@ -91,7 +105,7 @@
         {
             return Enum.GetValues(typeof (TradePriceType)).Cast<TradePriceType>().Select(tradePriceType => new MenuItem(tradePriceType.ToString(), (sender, e) => TradePriceTypeEventHandler(tradePriceType, (MenuItem) sender))
             {
-                RadioCheck = true, Checked = _tradePriceMonitor.PriceType == tradePriceType
+                RadioCheck = true
             }).ToArray();
         }
 
@@ -99,13 +113,50 @@
         {
             return _availableFrequencies.Select(frequency => new MenuItem(frequency.Key, (sender, e) => FrequencyEventHander(frequency.Value, (MenuItem) sender))
             {
-                RadioCheck = true, Checked = frequency.Key == "5 Seconds"
+                RadioCheck = true
             }).ToArray();
         }
 
         private MenuItem[] GetLoadProfileMenuItems()
         {
             return _profileStore.Profiles?.Select(p => new MenuItem(p, (sender, e) => LoadProfileEventHandler(p))).ToArray();
+        }
+
+        private void InitMenuOptions()
+        {
+            InitCurrencyMenuItems();
+            InitPriceTypeMenuItems();
+            InitFrequencyMenuItems();
+        }
+
+        private void InitCurrencyMenuItems()
+        {
+            var currencyMenuItem = Menu.MenuItems.Find(CurrencyMenuItemName, true)[0];
+            foreach (MenuItem item in currencyMenuItem.MenuItems)
+            {
+                item.Checked = item.Text == _tradePriceMonitor.ConvertToCurrency.ToString();
+            }
+        }
+
+        private void InitPriceTypeMenuItems()
+        {
+            var priceTypeMenuItem = Menu.MenuItems.Find(PriceTypeMenuItemName, true)[0];
+            foreach (MenuItem item in priceTypeMenuItem.MenuItems)
+            {
+                item.Checked = item.Text == _tradePriceMonitor.PriceType.ToString();
+            }
+        }
+
+        private void InitFrequencyMenuItems()
+        {
+            var frequencyMenuItem = Menu.MenuItems.Find(FrequencyMenuItemName, true)[0];
+            foreach (MenuItem item in frequencyMenuItem.MenuItems)
+            {
+                item.Checked = item.Text ==
+                               _availableFrequencies.Where(f => f.Value == _tradePriceMonitor.Frequency)
+                                   .Select(f => f.Key)
+                                   .FirstOrDefault();
+            }
         }
 
         private void RefreshLoadProfileMenuItems()
@@ -115,7 +166,7 @@
             loadProfileMenuItem[0]?.MenuItems.AddRange(GetLoadProfileMenuItems());
         }
 
-        private void UncheckMenuItems(Menu.MenuItemCollection menuItems)
+        private void UncheckMenuItems(IEnumerable menuItems)
         {
             foreach (MenuItem m in menuItems)
             {
@@ -127,25 +178,27 @@
         private void TradePriceTypeEventHandler(TradePriceType tradePriceType, MenuItem sourceItem)
         {
             _tradePriceMonitor.PriceType = tradePriceType;
-            RefreshPriceMonitor();
-            UncheckMenuItems(sourceItem.Parent.MenuItems);
-            sourceItem.Checked = !sourceItem.Checked;
+            MenuItemCheckedEventHandler(sourceItem);
         }
 
         private void CurrencyEventHandler(Currency currency, MenuItem sourceItem)
         {
             _tradePriceMonitor.ConvertToCurrency = currency;
-            RefreshPriceMonitor();
-            UncheckMenuItems(sourceItem.Parent.MenuItems);
-            sourceItem.Checked = !sourceItem.Checked;
+            MenuItemCheckedEventHandler(sourceItem);
         }
 
         private void FrequencyEventHander(int frequency, MenuItem sourceItem)
         {
             _tradePriceMonitor.Frequency = frequency;
+            MenuItemCheckedEventHandler(sourceItem);
+        }
+
+        private void MenuItemCheckedEventHandler(MenuItem sourceItem)
+        {
             RefreshPriceMonitor();
             UncheckMenuItems(sourceItem.Parent.MenuItems);
             sourceItem.Checked = !sourceItem.Checked;
+            _profileStore.SavePersistenceProfile(_tradePriceMonitor);
         }
 
         private void LoadProfileEventHandler(string profileName)
@@ -154,6 +207,7 @@
             _tradePriceMonitor.TrasferSubscription(newTradePriceMonitor);
             _tradePriceMonitor.Dispose();
             _tradePriceMonitor = newTradePriceMonitor;
+            InitMenuOptions();
             _tradePriceMonitor.StartMonitoring();
         }
 

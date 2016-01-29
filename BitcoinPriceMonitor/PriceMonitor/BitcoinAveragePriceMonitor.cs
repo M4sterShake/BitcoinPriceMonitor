@@ -1,6 +1,4 @@
-﻿
-
-namespace BitcoinPriceMonitor.PriceMonitor
+﻿namespace BitcoinPriceMonitor.PriceMonitor
 {
     using System;
     using RestSharp;
@@ -11,16 +9,20 @@ namespace BitcoinPriceMonitor.PriceMonitor
         private readonly IRestClient _apiClient;
         private readonly ISettings _settings;
 
-        public BitcoinAveragePriceMonitor()
-        {
-
-        }
-
         public BitcoinAveragePriceMonitor(IRestClient apiClient, ISettings settings)
         {
             _apiClient = apiClient;
             _settings = settings;
             apiClient.BaseUrl = new Uri(_settings.BitcoinAverageApiUrl);
+        }
+
+        public BitcoinAveragePriceMonitor(IRestClient apiClient, ISettings settings, TradePriceType priceType,
+            Currency convertToCurrency, int frequency)
+            : this(apiClient, settings)
+        {
+            PriceType = priceType;
+            ConvertToCurrency = convertToCurrency;
+            Frequency = frequency;
         }
         
         protected override double CheckPrice()
