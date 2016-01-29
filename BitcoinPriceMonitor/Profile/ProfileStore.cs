@@ -9,8 +9,8 @@
 
     public class ProfileStore : IProfileStore
     {
-        private ISettings _settings;
-        private ITradePriceMonitorFactory _monitorFactory;
+        private readonly ISettings _settings;
+        private readonly ITradePriceMonitorFactory _monitorFactory;
         private const string ProfileHeading = "_profile_";
 
         public ProfileStore(ISettings settings, ITradePriceMonitorFactory monitorFactory)
@@ -36,19 +36,19 @@
 
         public ITradePriceMonitor LoadProfile(string profileName)
         {
-            string serializedProfile = File.ReadAllText(getProfileFileName(profileName));
-            var profile = new JavaScriptSerializer().Deserialize<BitcoinPriceMonitor.Profile.Profile>(serializedProfile);
+            string serializedProfile = File.ReadAllText(GetProfileFileName(profileName));
+            var profile = new JavaScriptSerializer().Deserialize<Profile>(serializedProfile);
             return _monitorFactory.Get(profile);
         }
 
         public void SaveProfile(ITradePriceMonitor profile, string profileName)
         {
             var serializer = new JavaScriptSerializer();
-            var serializedProfile = serializer.Serialize(new BitcoinPriceMonitor.Profile.Profile(profile));
-            File.WriteAllText(getProfileFileName(profileName), serializedProfile);
+            var serializedProfile = serializer.Serialize(new Profile(profile));
+            File.WriteAllText(GetProfileFileName(profileName), serializedProfile);
         }
 
-        private string getProfileFileName(string profileName)
+        private string GetProfileFileName(string profileName)
         {
             return Path.Combine(_settings.ProfileStoreDirectory, $"{ProfileHeading}{profileName}");
         }

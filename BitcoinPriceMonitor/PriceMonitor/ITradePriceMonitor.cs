@@ -1,6 +1,9 @@
 ﻿namespace BitcoinPriceMonitor.PriceMonitor
 {
-    public interface ITradePriceMonitor : ITradePriceObservable
+    using System;
+    using Observer;
+
+    public interface ITradePriceMonitor : ITradePriceObservable, IDisposable
     {
         double CurrentPrice { get; }
         TradePriceType PriceType { get; set; }

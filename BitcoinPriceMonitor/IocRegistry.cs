@@ -3,6 +3,7 @@ using BitcoinPriceMonitor.Config;
 using BitcoinPriceMonitor.ContextMenu;
 using BitcoinPriceMonitor.NotifyIcon;
 using BitcoinPriceMonitor.PriceMonitor;
+using BitcoinPriceMonitor.Profile;
 
 namespace BitcoinPriceMonitor
 {

@@ -6,17 +6,33 @@
     using System.Windows.Forms;
     using Microsoft.VisualBasic;
     using PriceMonitor;
+    using Profile;
 
     public class TradePriceMonitorContextMenu : ITradePriceMonitorContextMenu
     {
-        public ContextMenu Menu { get; private set; }
+        public ContextMenu Menu { get; }
 
         private const string BitcoinPriceMenuItemName = "BitcoinPrice";
         private const string LoadProfileMenuItemName = "LoadProfiles";
 
         private ITradePriceMonitor _tradePriceMonitor;
-        private IProfileStore _profileStore;
-        
+        private readonly IProfileStore _profileStore;
+        private readonly Dictionary<string, int> _availableFrequencies = new Dictionary<string, int>()
+        {
+            { "5 Seconds", 1000 * 5 },
+            { "10 Seconds", 1000 * 10 },
+            { "30 Seconds", 1000 * 30 },
+            { "1 Minute", 1000 * 60 },
+            { "2 Minute", 11000 * 60 * 2 },
+            { "5 Minute", 1000 * 60 * 5 },
+            { "10 Minute", 1000 * 60 * 10 },
+            { "15 Minute", 1000 * 60 * 15 },
+            { "20 Minute", 1000 * 60 * 20 },
+            { "30 Minute", 1000 * 60 * 30 },
+            { "45 Minute", 1000 * 60 * 45 },
+            { "1 Hour", 1000 * 60 * 60 }
+        };
+
         public TradePriceMonitorContextMenu(ITradePriceMonitor tradePriceMonitor, IProfileStore profileStore)
         {
             _tradePriceMonitor = tradePriceMonitor;
@@ -65,56 +81,26 @@
 
         private MenuItem[] GetCurrencyMenuItems()
         {
-            List<MenuItem> menuItems = new List<MenuItem>();
-            foreach (var currency in Enum.GetValues(typeof(Currency)).Cast<Currency>())
+            return Enum.GetValues(typeof (Currency)).Cast<Currency>().Select(currency => new MenuItem(currency.ToString(), (sender, e) => CurrencyEventHandler(currency, (MenuItem) sender))
             {
-                menuItems.Add(new MenuItem(currency.ToString(),
-                    (sender, e) => CurrencyEventHandler(currency, (MenuItem)sender))
-                {
-                    RadioCheck = true,
-                    Checked = _tradePriceMonitor.ConvertToCurrency == currency
-                });
-            }
-
-            return menuItems.ToArray();
+                RadioCheck = true, Checked = _tradePriceMonitor.ConvertToCurrency == currency
+            }).ToArray();
         }
 
         private MenuItem[] GetTradePriceTypeMenuItems()
         {
-            List<MenuItem> menuItems = new List<MenuItem>();
-            foreach (var tradePriceType in Enum.GetValues(typeof(TradePriceType)).Cast<TradePriceType>())
+            return Enum.GetValues(typeof (TradePriceType)).Cast<TradePriceType>().Select(tradePriceType => new MenuItem(tradePriceType.ToString(), (sender, e) => TradePriceTypeEventHandler(tradePriceType, (MenuItem) sender))
             {
-                menuItems.Add(new MenuItem(tradePriceType.ToString(),
-                    (sender, e) => TradePriceTypeEventHandler(tradePriceType, (MenuItem)sender))
-                {
-                    RadioCheck = true,
-                    Checked = _tradePriceMonitor.PriceType == tradePriceType
-                });
-            }
-
-            return menuItems.ToArray();
+                RadioCheck = true, Checked = _tradePriceMonitor.PriceType == tradePriceType
+            }).ToArray();
         }
 
         private MenuItem[] GetFrequencyMenuItems()
         {
-            List<MenuItem> menuItems = new List<MenuItem>();
-            menuItems.Add(new MenuItem("5 Seconds", (sender, e) => FrequencyEventHander(5000, (MenuItem)sender))
+            return _availableFrequencies.Select(frequency => new MenuItem(frequency.Key, (sender, e) => FrequencyEventHander(frequency.Value, (MenuItem) sender))
             {
-                RadioCheck = true,
-                Checked = true
-            });
-            menuItems.Add(new MenuItem("10 Seconds", (sender, e) => FrequencyEventHander(10000, (MenuItem)sender)));
-            menuItems.Add(new MenuItem("30 Seconds", (sender, e) => FrequencyEventHander(30000, (MenuItem)sender)));
-            menuItems.Add(new MenuItem("1 Minute", (sender, e) => FrequencyEventHander(60000, (MenuItem)sender)));
-            menuItems.Add(new MenuItem("2 Minute", (sender, e) => FrequencyEventHander(120000, (MenuItem)sender)));
-            menuItems.Add(new MenuItem("5 Minute", (sender, e) => FrequencyEventHander(300000, (MenuItem)sender)));
-            menuItems.Add(new MenuItem("10 Minute", (sender, e) => FrequencyEventHander(600000, (MenuItem)sender)));
-            menuItems.Add(new MenuItem("15 Minute", (sender, e) => FrequencyEventHander(900000, (MenuItem)sender)));
-            menuItems.Add(new MenuItem("20 Minute", (sender, e) => FrequencyEventHander(1200000, (MenuItem)sender)));
-            menuItems.Add(new MenuItem("30 Minute", (sender, e) => FrequencyEventHander(1800000, (MenuItem)sender)));
-            menuItems.Add(new MenuItem("45 Minute", (sender, e) => FrequencyEventHander(2700000, (MenuItem)sender)));
-            menuItems.Add(new MenuItem("1 Hour", (sender, e) => FrequencyEventHander(3600000, (MenuItem)sender)));
-            return menuItems.ToArray();
+                RadioCheck = true, Checked = frequency.Key == "5 Seconds"
+            }).ToArray();
         }
 
         private MenuItem[] GetLoadProfileMenuItems()
@@ -125,8 +111,8 @@
         private void RefreshLoadProfileMenuItems()
         {
             var loadProfileMenuItem = Menu.MenuItems.Find(LoadProfileMenuItemName, true);
-            loadProfileMenuItem?[0]?.MenuItems.Clear();
-            loadProfileMenuItem?[0]?.MenuItems.AddRange(GetLoadProfileMenuItems());
+            loadProfileMenuItem[0]?.MenuItems.Clear();
+            loadProfileMenuItem[0]?.MenuItems.AddRange(GetLoadProfileMenuItems());
         }
 
         private void UncheckMenuItems(Menu.MenuItemCollection menuItems)
@@ -135,7 +121,7 @@
             {
                 m.Checked = false;
             }
-        }
+        } 
 
         #region Event Handlers
         private void TradePriceTypeEventHandler(TradePriceType tradePriceType, MenuItem sourceItem)
@@ -164,9 +150,9 @@
 
         private void LoadProfileEventHandler(string profileName)
         {
-            _tradePriceMonitor.StopMonitoring();
             var newTradePriceMonitor = _profileStore.LoadProfile(profileName);
             _tradePriceMonitor.TrasferSubscription(newTradePriceMonitor);
+            _tradePriceMonitor.Dispose();
             _tradePriceMonitor = newTradePriceMonitor;
             _tradePriceMonitor.StartMonitoring();
         }
@@ -190,7 +176,7 @@
         public void Update(double value)
         {
             var foundMenuItems  = Menu.MenuItems.Find("BitcoinPrice", false);
-            if (foundMenuItems?.Length > 0)
+            if (foundMenuItems.Length > 0)
             {
                 foundMenuItems[0].Text = $"{value} {_tradePriceMonitor.ConvertToCurrency}";
             }

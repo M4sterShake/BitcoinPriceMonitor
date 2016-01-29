@@ -1,5 +1,6 @@
 ﻿namespace BitcoinPriceMonitor.PriceMonitor
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading;
@@ -13,17 +14,13 @@
         public long Frequency { get; set; } = 5000;
 
         private Timer _priceCheckTimer;
-        private IList<ITradePriceObserver> _subscribers = new List<ITradePriceObserver>();
-
-        public TradePriceMonitor()
-        {
-        }
+        private readonly IList<ITradePriceObserver> _subscribers = new List<ITradePriceObserver>();
 
         public void StartMonitoring()
         {
             _priceCheckTimer = new Timer(state => 
             {
-                CurrentPrice = checkPrice();
+                CurrentPrice = CheckPrice();
                 Notify(CurrentPrice);
             }, null, 0, Frequency);
         }
@@ -33,7 +30,7 @@
             _priceCheckTimer.Dispose();
         }
 
-        abstract protected double checkPrice();
+        protected abstract double CheckPrice();
 
         private void Notify(double price)
         {
@@ -62,6 +59,11 @@
                 observable.Subscribe(observer);
                 Unsubscribe(observer);
             }
+        }
+
+        public void Dispose()
+        {
+            StopMonitoring();
         }
     }
 

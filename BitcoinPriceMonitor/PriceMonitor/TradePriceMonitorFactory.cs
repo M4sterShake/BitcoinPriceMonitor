@@ -1,4 +1,5 @@
 ﻿using BitcoinPriceMonitor.Config;
+using BitcoinPriceMonitor.Profile;
 
 namespace BitcoinPriceMonitor.PriceMonitor
 {
@@ -6,7 +7,7 @@ namespace BitcoinPriceMonitor.PriceMonitor
 
     public class TradePriceMonitorFactory : ITradePriceMonitorFactory
     {
-        private ISettings _settings;
+        private readonly ISettings _settings;
 
         public TradePriceMonitorFactory(ISettings settings)
         {

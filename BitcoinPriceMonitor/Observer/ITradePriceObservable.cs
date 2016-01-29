@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using BitcoinPriceMonitor.Observer;
-
-namespace BitcoinPriceMonitor
+﻿namespace BitcoinPriceMonitor.Observer
 {
     public interface ITradePriceObservable
     {

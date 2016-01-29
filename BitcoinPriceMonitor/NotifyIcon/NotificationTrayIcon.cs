@@ -1,4 +1,5 @@
-﻿using BitcoinPriceMonitor.Utils;
+﻿using System.Globalization;
+using BitcoinPriceMonitor.Utils;
 
 namespace BitcoinPriceMonitor.NotifyIcon
 {
@@ -10,8 +11,8 @@ namespace BitcoinPriceMonitor.NotifyIcon
 
     public class NotificationTrayIcon : INotificationTrayIcon
     {
-        private ITradePriceMonitorContextMenu _contextMenu;
-        private System.Windows.Forms.NotifyIcon _notifyIcon;
+        private readonly ITradePriceMonitorContextMenu _contextMenu;
+        private readonly System.Windows.Forms.NotifyIcon _notifyIcon;
 
         public NotificationTrayIcon(ITradePriceMonitorContextMenu contextMenu)
         {
@@ -35,18 +36,16 @@ namespace BitcoinPriceMonitor.NotifyIcon
 
         public void Update(double value)
         {
-            _notifyIcon.Icon = CreateIconImage(Math.Round(value).ToString());
+            _notifyIcon.Icon = CreateIconImage(Math.Round(value).ToString(CultureInfo.InvariantCulture));
         }
 
         private Icon CreateIconImage(string sImageText)
         {
             Bitmap objBmpImage = new Bitmap(1, 1);
-            int intWidth = 0;
-            int intHeight = 0;
-            Font objFont = new Font("Arial", 28, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            Font objFont = new Font("Arial", 28, FontStyle.Regular, GraphicsUnit.Pixel);
             Graphics objGraphics = Graphics.FromImage(objBmpImage);
-            intWidth = (int)objGraphics.MeasureString(sImageText, objFont).Width;
-            intHeight = (int)objGraphics.MeasureString(sImageText, objFont).Height;
+            var intWidth = (int)objGraphics.MeasureString(sImageText, objFont).Width;
+            var intHeight = (int)objGraphics.MeasureString(sImageText, objFont).Height;
             objBmpImage = new Bitmap(objBmpImage, new Size(intWidth, intHeight));
             objGraphics = Graphics.FromImage(objBmpImage);
             objGraphics.Clear(Color.Transparent);

@@ -14,7 +14,7 @@
             PriceType = priceMonitor.PriceType;
             ConvertToCurrency = priceMonitor.ConvertToCurrency;
             Frequency = priceMonitor.Frequency;
-            MonitorType = priceMonitor.GetType().Name.ToString();
+            MonitorType = priceMonitor.GetType().Name;
         }
 
         public TradePriceType PriceType { get; set; }

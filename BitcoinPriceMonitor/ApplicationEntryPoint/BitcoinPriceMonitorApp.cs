@@ -9,9 +9,9 @@ namespace BitcoinPriceMonitor.ApplicationEntryPoint
 
     public class BitcoinPriceMonitorApp : IBitcoinPriceMonitorApp
     {
-        private ITradePriceMonitor _priceMonitor;
-        private ITradePriceMonitorContextMenu _contextMenu;
-        private INotificationTrayIcon _notifyIcon;
+        private readonly ITradePriceMonitor _priceMonitor;
+        private readonly ITradePriceMonitorContextMenu _contextMenu;
+        private readonly INotificationTrayIcon _notifyIcon;
 
         public BitcoinPriceMonitorApp(ITradePriceMonitor priceMonitor, 
             ITradePriceMonitorContextMenu contextMenu,
@@ -20,7 +20,7 @@ namespace BitcoinPriceMonitor.ApplicationEntryPoint
             _priceMonitor = priceMonitor;
             _contextMenu = contextMenu;
             _notifyIcon = notifyIcon;
-            AppDomain.CurrentDomain.ProcessExit += (object sender, EventArgs e) => _notifyIcon.Close();
+            AppDomain.CurrentDomain.ProcessExit += (sender, e) => _notifyIcon.Close();
         }
 
         public void Start()

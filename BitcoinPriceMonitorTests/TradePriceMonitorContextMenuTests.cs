@@ -1,7 +1,8 @@
-﻿namespace BitcoinPriceMonitorTests
+﻿using BitcoinPriceMonitor.Profile;
+
+namespace BitcoinPriceMonitorTests
 {
     using System.Windows.Forms;
-    using BitcoinPriceMonitor;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
     using BitcoinPriceMonitor.ContextMenu;

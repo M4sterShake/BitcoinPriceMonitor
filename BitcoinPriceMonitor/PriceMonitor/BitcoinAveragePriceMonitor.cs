@@ -1,14 +1,15 @@
-﻿using BitcoinPriceMonitor.Config;
+﻿
 
 namespace BitcoinPriceMonitor.PriceMonitor
 {
     using System;
     using RestSharp;
+    using Config;
 
     public class BitcoinAveragePriceMonitor : TradePriceMonitor
     {
-        private IRestClient _apiClient;
-        private ISettings _settings;
+        private readonly IRestClient _apiClient;
+        private readonly ISettings _settings;
 
         public BitcoinAveragePriceMonitor()
         {
@@ -22,15 +23,15 @@ namespace BitcoinPriceMonitor.PriceMonitor
             apiClient.BaseUrl = new Uri(_settings.BitcoinAverageApiUrl);
         }
         
-        protected override double checkPrice()
+        protected override double CheckPrice()
         {
             var request = new RestRequest("ticker/global/{currency}/{priceType}", Method.GET);
-            request.AddUrlSegment("currency", Enum.GetName(typeof(Currency), this.ConvertToCurrency));
-            request.AddUrlSegment("priceType", Enum.GetName(typeof(TradePriceType), this.PriceType).ToLower());
+            request.AddUrlSegment("currency", Enum.GetName(typeof(Currency), ConvertToCurrency));
+            request.AddUrlSegment("priceType", Enum.GetName(typeof(TradePriceType), PriceType).ToLower());
             IRestResponse response = _apiClient.Execute(request);
             double result;
             
-            return double.TryParse(response.Content, out result) == true ? result : -1;
+            return double.TryParse(response.Content, out result) ? result : -1;
         }
     }
 }

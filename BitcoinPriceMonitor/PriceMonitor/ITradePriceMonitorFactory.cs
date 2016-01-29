@@ -1,4 +1,6 @@
-﻿namespace BitcoinPriceMonitor.PriceMonitor
+﻿using BitcoinPriceMonitor.Profile;
+
+namespace BitcoinPriceMonitor.PriceMonitor
 {
     public interface ITradePriceMonitorFactory
     {
