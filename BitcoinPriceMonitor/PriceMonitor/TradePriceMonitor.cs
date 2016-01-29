@@ -36,7 +36,7 @@
         {
             foreach (var observer in _subscribers)
             {
-                observer.Update(price);
+                observer.Update(new TradePrice(price, ConvertToCurrency));
             }
         }
 

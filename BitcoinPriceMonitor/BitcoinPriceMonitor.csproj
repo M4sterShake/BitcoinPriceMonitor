@@ -65,6 +65,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IoC\ProfileRegistry.cs" />
+    <Compile Include="Observer\TradePrice.cs" />
     <Compile Include="PriceMonitor\ITradePriceMonitorFactory.cs" />
     <Compile Include="Profile\IProfile.cs" />
     <Compile Include="Profile\IProfileStore.cs" />

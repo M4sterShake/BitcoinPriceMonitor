@@ -1,4 +1,6 @@
-﻿namespace BitcoinPriceMonitor.ContextMenu
+﻿using BitcoinPriceMonitor.Observer;
+
+namespace BitcoinPriceMonitor.ContextMenu
 {
     using System;
     using System.Collections.Generic;
@@ -239,12 +241,12 @@
         }
         #endregion
 
-        public void Update(double value)
+        public void Update(TradePrice price)
         {
             var foundMenuItems  = Menu.MenuItems.Find("BitcoinPrice", false);
             if (foundMenuItems.Length > 0)
             {
-                foundMenuItems[0].Text = $"{value} {_tradePriceMonitor.ConvertToCurrency}";
+                foundMenuItems[0].Text = $"{price.Price} {price.Currency}";
             }
         }
 

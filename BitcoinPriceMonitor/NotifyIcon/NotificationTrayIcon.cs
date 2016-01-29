@@ -1,4 +1,5 @@
 ﻿using System.Globalization;
+using BitcoinPriceMonitor.Observer;
 using BitcoinPriceMonitor.Utils;
 
 namespace BitcoinPriceMonitor.NotifyIcon
@@ -34,9 +35,10 @@ namespace BitcoinPriceMonitor.NotifyIcon
             TaskBarUtils.RefreshNotificationArea();
         }
 
-        public void Update(double value)
+        public void Update(TradePrice price)
         {
-            _notifyIcon.Icon = CreateIconImage(Math.Round(value).ToString(CultureInfo.InvariantCulture));
+            _notifyIcon.Icon = CreateIconImage(Math.Round(price.Price).ToString(CultureInfo.InvariantCulture));
+            _notifyIcon.Text = $"{price.Price} {price.Currency}";
         }
 
         private Icon CreateIconImage(string sImageText)

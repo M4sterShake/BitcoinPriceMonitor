@@ -25,7 +25,7 @@
 
             // Assert
             Assert.AreEqual(Currency.USD, target.ConvertToCurrency);
-            Assert.AreEqual(2000, target.Frequency);
+            Assert.AreEqual(5000, target.Frequency);
             Assert.AreEqual(TradePriceType.Last, target.PriceType);
         }
 
@@ -118,7 +118,7 @@
             target.StopMonitoring();
 
             // Assert
-            mockObserver.Verify(m => m.Update(expectedResult), Times.Exactly(2));
+            mockObserver.Verify(m => m.Update(new TradePrice(expectedResult, target.ConvertToCurrency)), Times.Exactly(2));
         }
 
         [TestMethod]
@@ -154,7 +154,7 @@
             target.StopMonitoring();
 
             // Assert
-            mockObserver.Verify(m => m.Update(expectedResult), Times.Exactly(2));
+            mockObserver.Verify(m => m.Update(new TradePrice(expectedResult, target.ConvertToCurrency)), Times.Exactly(2));
         }
 
         [TestMethod]
@@ -207,7 +207,7 @@
             target.Frequency = expectedFrequency;
 
             // Assert
-            Assert.AreEqual(2000, originalFrequency);
+            Assert.AreEqual(5000, originalFrequency);
             Assert.AreEqual(expectedFrequency, target.Frequency);
         }
     }

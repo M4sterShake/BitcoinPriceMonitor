@@ -1,4 +1,7 @@
-﻿namespace BitcoinPriceMonitorTests
+﻿using BitcoinPriceMonitor.Observer;
+using BitcoinPriceMonitor.PriceMonitor;
+
+namespace BitcoinPriceMonitorTests
 { 
     using System;
     using System.Windows.Forms;
@@ -40,7 +43,7 @@
             var originalIcon = ((NotifyIcon)GetInstanceField(typeof (NotificationTrayIcon), target, "_notifyIcon")).Icon;//((NotifyIcon) targetPrivateObj.GetFieldOrProperty("_notifyIcon", BindingFlags.GetField)).Icon;
 
             // Act
-            target.Update(2.5);
+            target.Update(new TradePrice(2.5, Currency.GBP));
             var iconAfterUpdate = ((NotifyIcon)GetInstanceField(typeof(NotificationTrayIcon), target, "_notifyIcon")).Icon;//((NotifyIcon) targetPrivateObj.GetFieldOrProperty("_notifyIcon",BindingFlags.GetField)).Icon;
 
             // Assert

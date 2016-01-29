@@ -1,4 +1,5 @@
-﻿using BitcoinPriceMonitor.Profile;
+﻿using BitcoinPriceMonitor.Observer;
+using BitcoinPriceMonitor.Profile;
 
 namespace BitcoinPriceMonitorTests
 {
@@ -70,7 +71,7 @@ namespace BitcoinPriceMonitorTests
             var updatePrice = 2.5;
 
             // Act
-            target.Update(updatePrice);
+            target.Update(new TradePrice(updatePrice, Currency.GBP));
             var priceItemTextAfterUpdate = target.Menu.MenuItems.Find("BitcoinPrice", false)[0].Text;
 
             // Assert
