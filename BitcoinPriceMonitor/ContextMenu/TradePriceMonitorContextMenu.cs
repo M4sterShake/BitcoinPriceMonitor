@@ -119,7 +119,13 @@
 
         private MenuItem[] GetLoadProfileMenuItems()
         {
-            return _profileStore.Profiles?.Select(p => new MenuItem(p, (sender, e) => LoadProfileEventHandler(p))).ToArray();
+            return _profileStore.Profiles?.Select(p =>
+            {
+                var profileMenuItem = new MenuItem(p);
+                profileMenuItem.MenuItems.Add(new MenuItem("Load", (sender, e) => LoadProfileEventHandler(p)));
+                profileMenuItem.MenuItems.Add(new MenuItem("Remove", (sender, e) => RemoveProfileEventHandler(p)));
+                return profileMenuItem;
+            }).ToArray();
         }
 
         private void InitMenuOptions()
@@ -209,6 +215,12 @@
             _tradePriceMonitor = newTradePriceMonitor;
             InitMenuOptions();
             _tradePriceMonitor.StartMonitoring();
+        }
+
+        private void RemoveProfileEventHandler(string profileName)
+        {
+            _profileStore.RemoveProfile(profileName);
+            RefreshLoadProfileMenuItems();
         }
 
         private void SaveProfileEventHandler()

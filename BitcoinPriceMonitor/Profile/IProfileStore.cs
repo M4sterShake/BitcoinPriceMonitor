@@ -9,5 +9,6 @@
         ITradePriceMonitor LoadProfile(string profileName);
         void SaveProfile(ITradePriceMonitor profile, string profileName);
         void SavePersistenceProfile(ITradePriceMonitor profile);
+        void RemoveProfile(string profileName);
     }
 }

@@ -54,6 +54,11 @@
             SaveProfile(profile, _settings.PersistanceProfileName);
         }
 
+        public void RemoveProfile(string profileName)
+        {
+            File.Delete(GetProfileFileName(profileName));
+        }
+
         private string GetProfileFileName(string profileName)
         {
             return Path.Combine(_settings.ProfileStoreDirectory, $"{ProfileHeading}{profileName}");
