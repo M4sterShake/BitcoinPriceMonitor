@@ -14,27 +14,27 @@ namespace BitcoinPriceMonitor.PriceMonitor
             _settings = settings;
         }
 
-        public ITradePriceMonitor Get(IProfile profile)
+        public ITradePriceMonitor Get(string monitorType)
         {
-            switch (profile.MonitorType)
+            switch (monitorType)
             {
                 case "BitcoinAveragePriceMonitor":
-                    return new BitcoinAveragePriceMonitor(new RestClient(), _settings)
-                    {
-                        TargetCurrency = profile.ConvertToCurrency,
-                        Frequency = profile.Frequency,
-                        PriceType = profile.PriceType
-                    };
+                    return new BitcoinAveragePriceMonitor(new RestClient(), _settings);
                 case "CoinbasePriceMonitor":
-                    return new CoinbasePriceMonitor(new RestClient(), _settings)
-                    {
-                        TargetCurrency = profile.ConvertToCurrency,
-                        Frequency = profile.Frequency,
-                        PriceType = profile.PriceType
-                    };
+                    return new CoinbasePriceMonitor(new RestClient(), _settings);
                 default:
                     return null;
             }
+        }
+
+        public ITradePriceMonitor Get(IProfile profile)
+        {
+            var monitor = Get(profile.MonitorType);
+            monitor.PriceType = profile.PriceType;
+            monitor.TargetCurrency = profile.TargetCurrency;
+            monitor.Frequency = profile.Frequency;
+
+            return monitor;
         }
     }
 }

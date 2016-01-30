@@ -16,6 +16,7 @@ namespace BitcoinPriceMonitor.ContextMenu
         public ContextMenu Menu { get; }
 
         private const string BitcoinPriceMenuItemName = "BitcoinPrice";
+        private const string DatasourceMenuItemName = "DatasourceMenuItemName";
         private const string CurrencyMenuItemName = "Currecy";
         private const string PriceTypeMenuItemName = "PriceType";
         private const string FrequencyMenuItemName = "Frequency";
@@ -23,6 +24,7 @@ namespace BitcoinPriceMonitor.ContextMenu
 
         private ITradePriceMonitor _tradePriceMonitor;
         private readonly IProfileStore _profileStore;
+        private readonly ITradePriceMonitorFactory _monitorFactory;
         private readonly Dictionary<string, int> _availableFrequencies = new Dictionary<string, int>()
         {
             { "5 Seconds", 1000 * 5 },
@@ -38,11 +40,17 @@ namespace BitcoinPriceMonitor.ContextMenu
             { "45 Minute", 1000 * 60 * 45 },
             { "1 Hour", 1000 * 60 * 60 }
         };
+        private readonly Dictionary<string, Type> _datasources = new Dictionary<string, Type>()
+        {
+            { "Bitcoin Average", typeof(BitcoinAveragePriceMonitor) },
+            { "Coinbase", typeof(CoinbasePriceMonitor) }
+        }; 
 
-        public TradePriceMonitorContextMenu(ITradePriceMonitor tradePriceMonitor, IProfileStore profileStore)
+        public TradePriceMonitorContextMenu(ITradePriceMonitor tradePriceMonitor, IProfileStore profileStore, ITradePriceMonitorFactory monitorFactory)
         {
             _tradePriceMonitor = tradePriceMonitor;
             _profileStore = profileStore;
+            _monitorFactory = monitorFactory;
             Menu = GetMenu();
             InitMenuOptions();
         }
@@ -53,29 +61,11 @@ namespace BitcoinPriceMonitor.ContextMenu
         {
             var contextMenu = new ContextMenu();
 
-            var priceTypeMenuItem = new MenuItem("Trade Price Type")
-            {
-                Name = PriceTypeMenuItemName
-            };
-            priceTypeMenuItem.MenuItems.AddRange(GetTradePriceTypeMenuItems());
-
-            var currencyMenuItem = new MenuItem("Currency")
-            {
-                Name = CurrencyMenuItemName
-            };
-            currencyMenuItem.MenuItems.AddRange(GetCurrencyMenuItems());
-            
-            var frequencyMenuItem = new MenuItem("Price Check Frequency")
-            {
-                Name = FrequencyMenuItemName
-            };
-            frequencyMenuItem.MenuItems.AddRange(GetFrequencyMenuItems());
-
-            var loadProfileMenuItem = new MenuItem("Load Settings")
-            {
-                Name = LoadProfileMenuItemName
-            };
-            loadProfileMenuItem.MenuItems.AddRange(GetLoadProfileMenuItems());
+            var datasourceMenuItem = GetDatasourceMenuItem();
+            var priceTypeMenuItem = GetTradePriceTypeMenuItem();
+            var currencyMenuItem = GetCurrencyMenuItem();
+            var frequencyMenuItem = GetFrequencyMenuItem();
+            var loadProfileMenuItem = GetLoadProfileMenuItem();
             var saveProfileMenuItem = new MenuItem("Save Settings...", (sender, e) => SaveProfileEventHandler());
 
             contextMenu.MenuItems.Add(new MenuItem("Getting bitcoin price...")
@@ -83,6 +73,7 @@ namespace BitcoinPriceMonitor.ContextMenu
                 Name = BitcoinPriceMenuItemName
             });
             contextMenu.MenuItems.Add("-");
+            contextMenu.MenuItems.Add(datasourceMenuItem);
             contextMenu.MenuItems.Add(priceTypeMenuItem);
             contextMenu.MenuItems.Add(currencyMenuItem);
             contextMenu.MenuItems.Add(frequencyMenuItem);
@@ -95,46 +86,109 @@ namespace BitcoinPriceMonitor.ContextMenu
             return contextMenu;
         }
 
-        private MenuItem[] GetCurrencyMenuItems()
+        private MenuItem GetDatasourceMenuItem()
         {
-            return Enum.GetValues(typeof (Currency)).Cast<Currency>().Select(currency => new MenuItem(currency.ToString(), (sender, e) => CurrencyEventHandler(currency, (MenuItem) sender))
-            {
-                RadioCheck = true
-            }).ToArray();
+            var subMenuItems =
+                _datasources.Select(
+                    datasource =>
+                        new MenuItem(datasource.Key,
+                            (sender, e) => DatasourceEventHandler(datasource.Value.Name, (MenuItem) sender))
+                        {
+                            RadioCheck = true
+                        }).ToArray();
+
+            return CreateMenuItem("Datasource", DatasourceMenuItemName, subMenuItems);
         }
 
-        private MenuItem[] GetTradePriceTypeMenuItems()
+        private MenuItem GetTradePriceTypeMenuItem()
         {
-            return Enum.GetValues(typeof (TradePriceType)).Cast<TradePriceType>().Select(tradePriceType => new MenuItem(tradePriceType.ToString(), (sender, e) => TradePriceTypeEventHandler(tradePriceType, (MenuItem) sender))
-            {
-                RadioCheck = true
-            }).ToArray();
+            var subMenuItems =
+                Enum.GetValues(typeof (TradePriceType))
+                    .Cast<TradePriceType>()
+                    .Select(
+                        tradePriceType =>
+                            new MenuItem(tradePriceType.ToString(),
+                                (sender, e) => TradePriceTypeEventHandler(tradePriceType, (MenuItem) sender))
+                            {
+                                RadioCheck = true
+                            }).ToArray();
+
+            return CreateMenuItem("Trade Price Type", PriceTypeMenuItemName, subMenuItems);
         }
 
-        private MenuItem[] GetFrequencyMenuItems()
+        private MenuItem GetCurrencyMenuItem()
         {
-            return _availableFrequencies.Select(frequency => new MenuItem(frequency.Key, (sender, e) => FrequencyEventHander(frequency.Value, (MenuItem) sender))
-            {
-                RadioCheck = true
-            }).ToArray();
+            var subMenuItems =
+                Enum.GetValues(typeof (Currency))
+                    .Cast<Currency>()
+                    .Select(
+                        currency =>
+                            new MenuItem(currency.ToString(),
+                                (sender, e) => CurrencyEventHandler(currency, (MenuItem) sender))
+                            {
+                                RadioCheck = true
+                            }).ToArray();
+
+            return CreateMenuItem("Currency", CurrencyMenuItemName, subMenuItems);
         }
 
-        private MenuItem[] GetLoadProfileMenuItems()
+        private MenuItem GetFrequencyMenuItem()
         {
-            return _profileStore.Profiles?.Select(p =>
+            var subMenuItems =
+                _availableFrequencies.Select(
+                    frequency =>
+                        new MenuItem(frequency.Key,
+                            (sender, e) => FrequencyEventHander(frequency.Value, (MenuItem) sender))
+                        {
+                            RadioCheck = true
+                        }).ToArray();
+
+            return CreateMenuItem("Price Check Frequency", FrequencyMenuItemName, subMenuItems);
+        }
+
+        private MenuItem GetLoadProfileMenuItem()
+        {
+            var subMenuItems =  _profileStore.Profiles?.Select(p =>
             {
                 var profileMenuItem = new MenuItem(p);
                 profileMenuItem.MenuItems.Add(new MenuItem("Load", (sender, e) => LoadProfileEventHandler(p)));
                 profileMenuItem.MenuItems.Add(new MenuItem("Remove", (sender, e) => RemoveProfileEventHandler(p)));
                 return profileMenuItem;
             }).ToArray();
+
+            return CreateMenuItem("Load Settings", LoadProfileMenuItemName, subMenuItems);
+        }
+
+        private MenuItem CreateMenuItem(string text, string name, MenuItem[] subMenuItems)
+        {
+            var menuItem = new MenuItem(text)
+            {
+                Name = name
+            };
+
+            menuItem.MenuItems.AddRange(subMenuItems);
+
+            return menuItem;
         }
 
         private void InitMenuOptions()
         {
+            InitDatasourceMenuItems();
             InitCurrencyMenuItems();
             InitPriceTypeMenuItems();
             InitFrequencyMenuItems();
+        }
+
+        private void InitDatasourceMenuItems()
+        {
+            var datasourceMenuItem = Menu.MenuItems.Find(DatasourceMenuItemName, true)[0];
+            foreach (MenuItem item in datasourceMenuItem.MenuItems)
+            {
+                item.Checked = item.Text ==
+                               _datasources.Where(d => d.Value == _tradePriceMonitor.GetType())
+                                   .Select(d => d.Key)
+                                   .FirstOrDefault();
+            }
         }
 
         private void InitCurrencyMenuItems()
@@ -171,7 +225,9 @@ namespace BitcoinPriceMonitor.ContextMenu
         {
             var loadProfileMenuItem = Menu.MenuItems.Find(LoadProfileMenuItemName, true);
             loadProfileMenuItem[0]?.MenuItems.Clear();
-            loadProfileMenuItem[0]?.MenuItems.AddRange(GetLoadProfileMenuItems());
+            MenuItem[] profileMenuItems = new MenuItem[GetLoadProfileMenuItem().MenuItems.Count];
+            GetLoadProfileMenuItem().MenuItems.CopyTo(profileMenuItems, 0);
+            loadProfileMenuItem[0]?.MenuItems.AddRange(profileMenuItems);
         }
 
         private void UncheckMenuItems(IEnumerable menuItems)
@@ -183,6 +239,23 @@ namespace BitcoinPriceMonitor.ContextMenu
         } 
 
         #region Event Handlers
+
+        private void DatasourceEventHandler(string datasourceName, MenuItem sourceItem)
+        {
+            var newTradePriceMonitor = _monitorFactory.Get(new Profile()
+            {
+                MonitorType = datasourceName,
+                Frequency = _tradePriceMonitor.Frequency,
+                TargetCurrency = _tradePriceMonitor.TargetCurrency,
+                PriceType =  _tradePriceMonitor.PriceType
+            });
+            _tradePriceMonitor.TrasferSubscription(newTradePriceMonitor);
+            _tradePriceMonitor.Dispose();
+            _tradePriceMonitor = newTradePriceMonitor;
+            _tradePriceMonitor.StartMonitoring();
+            MenuItemCheckedEventHandler(sourceItem);
+        }
+
         private void TradePriceTypeEventHandler(TradePriceType tradePriceType, MenuItem sourceItem)
         {
             _tradePriceMonitor.PriceType = tradePriceType;
