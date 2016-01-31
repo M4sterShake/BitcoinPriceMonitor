@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using BitcoinPriceMonitor.ContextMenu.Sections;
 using BitcoinPriceMonitor.PriceMonitor;
 using BitcoinPriceMonitor.Profile;
 

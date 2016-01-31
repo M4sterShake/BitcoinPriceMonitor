@@ -53,7 +53,7 @@
 
         private void ClickEventHandler(string datasourceName, MenuItem sourceItem)
         {
-            var newTradePriceMonitor = _monitorFactory.Get(new Profile.Profile
+            var newTradePriceMonitor = _monitorFactory.Get(new Profile
             {
                 MonitorType = datasourceName,
                 Frequency = TradePriceMonitor.Frequency,
