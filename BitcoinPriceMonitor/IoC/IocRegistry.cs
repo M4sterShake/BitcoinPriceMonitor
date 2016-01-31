@@ -7,6 +7,7 @@
     using PriceMonitor;
     using Profile;
     using StructureMap;
+    using ContextMenu.Sections;
 
     public class IocRegistry : Registry
     {
