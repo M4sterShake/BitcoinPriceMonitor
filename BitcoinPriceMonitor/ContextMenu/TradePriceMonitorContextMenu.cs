@@ -13,29 +13,13 @@
         private const string BitcoinPriceMenuItemName = "BitcoinPrice";
 
         private ITradePriceMonitor _tradePriceMonitor;
-        private readonly IProfileStore _profileStore;
-        private readonly ITradePriceMonitorFactory _monitorFactory;
+        private readonly ITradePriceMenuSections _menuSections;
 
-        private readonly DatasourceContextMenuSection _datasourceMenuItem;
-        private readonly TradePriceTypeContextMenuSection _tradePriceTypeMenuItem;
-        private readonly CurrencyContextMenuItemSection _currencyMenuItem;
-        private readonly FrequencyContextMenuSection _frequencyMenuItem;
-        private readonly LoadProfileContextMenuSection _loadProfileMenuItem;
-        private readonly SaveProfileContextMenuSection _saveProfileMenuItem;
-
-        public TradePriceMonitorContextMenu(ITradePriceMonitor tradePriceMonitor, IProfileStore profileStore, ITradePriceMonitorFactory monitorFactory)
+        public TradePriceMonitorContextMenu(ITradePriceMonitor tradePriceMonitor, ITradePriceMenuSections menuSections)
         {
             _tradePriceMonitor = tradePriceMonitor;
-            _profileStore = profileStore;
-            _monitorFactory = monitorFactory;
-
-            _datasourceMenuItem = new DatasourceContextMenuSection(_tradePriceMonitor, _profileStore, _monitorFactory);
-            _tradePriceTypeMenuItem = new TradePriceTypeContextMenuSection(_tradePriceMonitor, _profileStore);
-            _currencyMenuItem = new CurrencyContextMenuItemSection(_tradePriceMonitor, _profileStore);
-            _frequencyMenuItem = new FrequencyContextMenuSection(_tradePriceMonitor, _profileStore);
-            _loadProfileMenuItem = new LoadProfileContextMenuSection(_tradePriceMonitor, _profileStore, this);
-            _saveProfileMenuItem = new SaveProfileContextMenuSection(_tradePriceMonitor, _profileStore);
-
+            _menuSections = menuSections;
+            (_menuSections.LoadProfileSection as IProfileLoader)?.Subscribe(this);
             Menu = GetMenu();
             InitMenuOptions();
         }
@@ -54,10 +38,10 @@
         public void ProfileLoaded(ITradePriceMonitor loadedPriceMonitor)
         {
             _tradePriceMonitor = loadedPriceMonitor;
-            _datasourceMenuItem.UpdateTradePriceMonitor(_tradePriceMonitor);
-            _tradePriceTypeMenuItem.UpdateTradePriceMonitor(_tradePriceMonitor);
-            _currencyMenuItem.UpdateTradePriceMonitor(_tradePriceMonitor);
-            _frequencyMenuItem.UpdateTradePriceMonitor(_tradePriceMonitor);
+            _menuSections.DatasourceSection.UpdateTradePriceMonitor(_tradePriceMonitor);
+            _menuSections.PriceTypeSection.UpdateTradePriceMonitor(_tradePriceMonitor);
+            _menuSections.CurrencySection.UpdateTradePriceMonitor(_tradePriceMonitor);
+            _menuSections.FrequencySection.UpdateTradePriceMonitor(_tradePriceMonitor);
             InitMenuOptions();
         }
 
@@ -70,13 +54,13 @@
                 Name = BitcoinPriceMenuItemName
             });
             contextMenu.MenuItems.Add("-");
-            contextMenu.MenuItems.Add(_datasourceMenuItem.GetMenuItem());
-            contextMenu.MenuItems.Add(_tradePriceTypeMenuItem.GetMenuItem());
-            contextMenu.MenuItems.Add(_currencyMenuItem.GetMenuItem());
-            contextMenu.MenuItems.Add(_frequencyMenuItem.GetMenuItem());
+            contextMenu.MenuItems.Add(_menuSections.DatasourceSection.GetMenuItem());
+            contextMenu.MenuItems.Add(_menuSections.PriceTypeSection.GetMenuItem());
+            contextMenu.MenuItems.Add(_menuSections.CurrencySection.GetMenuItem());
+            contextMenu.MenuItems.Add(_menuSections.FrequencySection.GetMenuItem());
             contextMenu.MenuItems.Add("-");
-            contextMenu.MenuItems.Add(_loadProfileMenuItem.GetMenuItem());
-            contextMenu.MenuItems.Add(_saveProfileMenuItem.GetMenuItem());
+            contextMenu.MenuItems.Add(_menuSections.LoadProfileSection.GetMenuItem());
+            contextMenu.MenuItems.Add(_menuSections.SaveProfileSection.GetMenuItem());
             contextMenu.MenuItems.Add("-");
             contextMenu.MenuItems.Add("Exit", ExitEventHandler);
 
@@ -85,10 +69,10 @@
 
         private void InitMenuOptions()
         {
-            _datasourceMenuItem.InitMenuItem();
-            _currencyMenuItem.InitMenuItem();
-            _tradePriceTypeMenuItem.InitMenuItem();
-            _frequencyMenuItem.InitMenuItem();
+            _menuSections.DatasourceSection.InitMenuItem();
+            _menuSections.PriceTypeSection.InitMenuItem();
+            _menuSections.CurrencySection.InitMenuItem();
+            _menuSections.FrequencySection.InitMenuItem();
         }
 
         #region Event Handlers

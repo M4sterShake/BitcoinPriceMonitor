@@ -9,14 +9,13 @@ using BitcoinPriceMonitor.Profile;
 
 namespace BitcoinPriceMonitor.ContextMenu
 {
-    class LoadProfileContextMenuSection : ProfileMenuItemSection
+    class LoadProfileContextMenuSection : ProfileMenuItemSection, IProfileLoader
     {
         private const string LoadProfileMenuItemName = "LoadProfiles";
-        private ILoadProfileListener _loadProfileListener;
+        private List<ILoadProfileListener> _loadProfileListeners = new List<ILoadProfileListener>();
 
-        public LoadProfileContextMenuSection(ITradePriceMonitor tradePriceMonitor, IProfileStore profileStore, ILoadProfileListener loadProfileListener) : base(tradePriceMonitor, profileStore)
+        public LoadProfileContextMenuSection(ITradePriceMonitor tradePriceMonitor, IProfileStore profileStore) : base(tradePriceMonitor, profileStore)
         {
-            _loadProfileListener = loadProfileListener;
         }
 
         public override MenuItem GetMenuItem()
@@ -45,7 +44,7 @@ namespace BitcoinPriceMonitor.ContextMenu
             TradePriceMonitor.TrasferSubscription(newTradePriceMonitor);
             TradePriceMonitor.Dispose();
             TradePriceMonitor = newTradePriceMonitor;
-            _loadProfileListener.ProfileLoaded(newTradePriceMonitor);
+            Notify(newTradePriceMonitor);
             TradePriceMonitor.StartMonitoring();
         }
 
@@ -53,6 +52,19 @@ namespace BitcoinPriceMonitor.ContextMenu
         {
             ProfileStore.RemoveProfile(profileName);
             RefreshLoadProfileMenuItems();
+        }
+
+        private void Notify(ITradePriceMonitor newPriceMonitor)
+        {
+            foreach (var listener in _loadProfileListeners)
+            {
+                listener.ProfileLoaded(newPriceMonitor);
+            }
+        }
+
+        public void Subscribe(ILoadProfileListener listener)
+        {
+            _loadProfileListeners.Add(listener);
         }
     }
 }

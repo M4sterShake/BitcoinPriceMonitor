@@ -1,5 +1,6 @@
 ﻿using BitcoinPriceMonitor.ApplicationEntryPoint;
 using BitcoinPriceMonitor.Config;
+using BitcoinPriceMonitor.IoC;
 
 namespace BitcoinPriceMonitor
 {
