@@ -64,11 +64,21 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ContextMenu\CurrencyContextMenuItemSection.cs" />
+    <Compile Include="ContextMenu\FrequencyContextMenuSection.cs" />
+    <Compile Include="ContextMenu\ITradePriceMonitorContextMenuSection.cs" />
+    <Compile Include="ContextMenu\DatasourceContextMenuSection.cs" />
+    <Compile Include="ContextMenu\LoadProfileContextMenuSection.cs" />
+    <Compile Include="ContextMenu\ProfileMenuItemSection.cs" />
+    <Compile Include="ContextMenu\SaveProfileContextMenuSection.cs" />
+    <Compile Include="ContextMenu\TradePriceMonitorContextMenuSection.cs" />
+    <Compile Include="ContextMenu\TradePriceTypeContextMenuSection.cs" />
     <Compile Include="IoC\ProfileRegistry.cs" />
     <Compile Include="Observer\TradePrice.cs" />
     <Compile Include="PriceMonitor\CoinbasePriceMonitor.cs" />
     <Compile Include="PriceMonitor\ITradePriceMonitorFactory.cs" />
     <Compile Include="PriceMonitor\RestTradePriceMonitor.cs" />
+    <Compile Include="Profile\ILoadProfileListener.cs" />
     <Compile Include="Profile\IProfile.cs" />
     <Compile Include="Profile\IProfileStore.cs" />
     <Compile Include="PriceMonitor\BitcoinAveragePriceMonitor.cs" />
