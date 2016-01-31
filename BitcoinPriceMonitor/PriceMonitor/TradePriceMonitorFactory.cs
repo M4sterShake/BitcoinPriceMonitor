@@ -1,8 +1,7 @@
-﻿using BitcoinPriceMonitor.Config;
-using BitcoinPriceMonitor.Profile;
-
-namespace BitcoinPriceMonitor.PriceMonitor
+﻿namespace BitcoinPriceMonitor.PriceMonitor
 {
+    using Config;
+    using Profile;
     using RestSharp;
 
     public class TradePriceMonitorFactory : ITradePriceMonitorFactory
@@ -27,6 +26,8 @@ namespace BitcoinPriceMonitor.PriceMonitor
                 case "BitstampPriceMonitor":
                     return new BitstampPriceMonitor(new RestClient(), _settings);
                 case "BitfinexPriceMonitor":
+                    return new BitfinexPriceMonitor(new RestClient(), _settings);
+                case "JustcoinPriceMonitor":
                     return new BitfinexPriceMonitor(new RestClient(), _settings);
                 default:
                     return null;

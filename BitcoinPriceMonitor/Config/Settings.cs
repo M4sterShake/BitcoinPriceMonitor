@@ -12,6 +12,7 @@
         public string BtceApiUrl => ConfigurationManager.AppSettings["BtceApiUrl"];
         public string BitstampApiUrl => ConfigurationManager.AppSettings["BitstampApiUrl"];
         public string BitfinexApiUrl => ConfigurationManager.AppSettings["BitfinexApiUrl"];
+        public string JustcoinApiUrl => ConfigurationManager.AppSettings["JustcoinApiUrl"];
         public string PersistanceProfileName => "xxCURRENTxx";
     }
 }

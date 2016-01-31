@@ -16,7 +16,8 @@
             { "Coinbase (USA)", typeof(CoinbasePriceMonitor) },
             { "BTC-e (Russia)", typeof(BtcePriceMonitor)},
             { "Bitstamp (USA - USD Only)", typeof(BitstampPriceMonitor) },
-            { "Bitfinex (Hong Kong)", typeof(BitfinexPriceMonitor) }
+            { "Bitfinex (Hong Kong)", typeof(BitfinexPriceMonitor) },
+            { "Justcoin (Norway)", typeof(JustcoinPriceMonitor) }
         };
         private List<ILoadProfileListener> _loadProfileListeners = new List<ILoadProfileListener>();
 

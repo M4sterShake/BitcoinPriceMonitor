@@ -8,6 +8,7 @@
         string BtceApiUrl { get; }
         string BitstampApiUrl { get; }
         string BitfinexApiUrl { get; }
+        string JustcoinApiUrl { get; }
         string PersistanceProfileName { get; }
     }
 }

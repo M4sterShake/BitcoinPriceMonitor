@@ -86,6 +86,7 @@
     <Compile Include="PriceMonitor\BtcePriceMonitor.cs" />
     <Compile Include="PriceMonitor\CoinbasePriceMonitor.cs" />
     <Compile Include="PriceMonitor\ITradePriceMonitorFactory.cs" />
+    <Compile Include="PriceMonitor\JustcoinPriceMonitor.cs" />
     <Compile Include="PriceMonitor\RestTradePriceMonitor.cs" />
     <Compile Include="Profile\ILoadProfileListener.cs" />
     <Compile Include="Profile\IProfile.cs" />
