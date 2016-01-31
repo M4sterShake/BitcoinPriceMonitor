@@ -98,7 +98,7 @@
     <Compile Include="PriceMonitor\ITradePriceMonitor.cs" />
     <Compile Include="IoC\IocRegistry.cs" />
     <Compile Include="IoC\SettingsRegistry.cs" />
-    <Compile Include="Utils\TaskBarUtils.cs" />
+    <Compile Include="Utils\NativeMethods.cs" />
     <Compile Include="ContextMenu\TradePriceMonitorContextMenu.cs" />
     <Compile Include="PriceMonitor\TradePriceMonitor.cs" />
     <Compile Include="Program.cs" />

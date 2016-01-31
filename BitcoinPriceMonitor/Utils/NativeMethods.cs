@@ -4,7 +4,7 @@
     using System.Runtime.InteropServices;
     using Microsoft.VisualStudio.OLE.Interop;
 
-    internal class TaskBarUtils
+    internal class NativeMethods
     {
         public static void RefreshNotificationArea()
         {
@@ -23,8 +23,8 @@
                     SendMessage(
                         windowHandle,
                         wmMousemove,
-                        0,
-                        (y << 16) + x);
+                        new IntPtr(0),
+                        new IntPtr((y << 16) + x));
         }
         private static IntPtr GetNotificationAreaHandle()
         {
@@ -45,14 +45,14 @@
                                                         notificationAreaTitleInWindows7);
             return notificationAreaHandle;
         }
-        [DllImport("user32.dll", SetLastError = true)]
+        [DllImport("user32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
         static extern IntPtr FindWindowEx(IntPtr parentHandle, IntPtr childAfter,
                                                         string className,
                                                         string windowTitle);
         [DllImport("user32.dll")]
         static extern bool GetClientRect(IntPtr handle, out RECT rect);
         [DllImport("user32.dll", CharSet = CharSet.Auto)]
-        static extern IntPtr SendMessage(IntPtr handle, UInt32 message, Int32 wParam,
-                                                        Int32 lParam);
+        static extern IntPtr SendMessage(IntPtr handle, UInt32 message, IntPtr wParam,
+                                                        IntPtr lParam);
     }
 }

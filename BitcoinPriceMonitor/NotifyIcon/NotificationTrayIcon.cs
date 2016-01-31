@@ -32,7 +32,7 @@ namespace BitcoinPriceMonitor.NotifyIcon
         {
             _notifyIcon.Visible = false;
             _notifyIcon.Dispose();
-            TaskBarUtils.RefreshNotificationArea();
+            NativeMethods.RefreshNotificationArea();
         }
 
         public void Update(TradePrice price)

@@ -63,7 +63,22 @@
 
         public void Dispose()
         {
-            StopMonitoring();
+            
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        private void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                StopMonitoring();
+            }
+        }
+
+        ~TradePriceMonitor()
+        {
+            Dispose(false);
         }
     }
 
