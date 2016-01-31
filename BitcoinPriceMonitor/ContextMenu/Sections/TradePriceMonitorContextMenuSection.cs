@@ -1,7 +1,7 @@
-﻿namespace BitcoinPriceMonitor.ContextMenu
+﻿namespace BitcoinPriceMonitor.ContextMenu.Sections
 {
-    using System.Windows.Forms;
     using System.Collections;
+    using System.Windows.Forms;
     using PriceMonitor;
     using Profile;
 

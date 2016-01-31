@@ -1,8 +1,7 @@
-﻿using BitcoinPriceMonitor.PriceMonitor;
-
-namespace BitcoinPriceMonitor.ContextMenu
+﻿namespace BitcoinPriceMonitor.ContextMenu.Sections
 {
     using System.Windows.Forms;
+    using PriceMonitor;
 
     public interface ITradePriceMonitorContextMenuSection
     {

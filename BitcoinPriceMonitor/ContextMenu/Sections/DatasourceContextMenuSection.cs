@@ -1,4 +1,4 @@
-﻿namespace BitcoinPriceMonitor.ContextMenu
+﻿namespace BitcoinPriceMonitor.ContextMenu.Sections
 {
     using System;
     using System.Collections.Generic;
@@ -53,7 +53,7 @@
 
         private void ClickEventHandler(string datasourceName, MenuItem sourceItem)
         {
-            var newTradePriceMonitor = _monitorFactory.Get(new Profile
+            var newTradePriceMonitor = _monitorFactory.Get(new Profile.Profile
             {
                 MonitorType = datasourceName,
                 Frequency = TradePriceMonitor.Frequency,

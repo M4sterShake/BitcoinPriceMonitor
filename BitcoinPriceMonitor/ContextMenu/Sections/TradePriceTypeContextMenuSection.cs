@@ -1,14 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using BitcoinPriceMonitor.PriceMonitor;
-using BitcoinPriceMonitor.Profile;
-
-namespace BitcoinPriceMonitor.ContextMenu
+﻿namespace BitcoinPriceMonitor.ContextMenu.Sections
 {
+    using System;
+    using System.Linq;
+    using System.Windows.Forms;
+    using PriceMonitor;
+    using Profile;
+
     class TradePriceTypeContextMenuSection : TradePriceMonitorContextMenuSection
     {
         private const string PriceTypeMenuItemName = "PriceType";

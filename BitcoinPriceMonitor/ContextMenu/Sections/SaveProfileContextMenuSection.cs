@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using BitcoinPriceMonitor.PriceMonitor;
-using BitcoinPriceMonitor.Profile;
-using Microsoft.VisualBasic;
-
-namespace BitcoinPriceMonitor.ContextMenu
+﻿namespace BitcoinPriceMonitor.ContextMenu.Sections
 {
+    using System;
+    using System.Windows.Forms;
+    using PriceMonitor;
+    using Profile;
+    using Microsoft.VisualBasic;
+
     class SaveProfileContextMenuSection : ProfileMenuItemSection
     {
         public SaveProfileContextMenuSection(ITradePriceMonitor tradePriceMonitor, IProfileStore profileStore) : base(tradePriceMonitor, profileStore)

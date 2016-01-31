@@ -1,5 +1,7 @@
 ﻿namespace BitcoinPriceMonitor.ContextMenu
 {
+    using Sections;
+
     public struct TradePriceMenuSections : ITradePriceMenuSections
     {
         public TradePriceMenuSections(ITradePriceMonitorContextMenuSection datasourceSection,
