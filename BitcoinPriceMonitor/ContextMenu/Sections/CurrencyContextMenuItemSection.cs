@@ -44,7 +44,10 @@
         private void ClickEventHandler(Currency currency, MenuItem sourceItem)
         {
             TradePriceMonitor.TargetCurrency = currency;
-            MenuItemCheckedEventHandler(sourceItem);
+            if (TradePriceMonitor.TargetCurrency == currency)
+            {
+                MenuItemCheckedEventHandler(sourceItem);
+            }
         }
     }
 }

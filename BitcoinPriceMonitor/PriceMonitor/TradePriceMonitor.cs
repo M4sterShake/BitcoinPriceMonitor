@@ -8,7 +8,7 @@
 
     public abstract class TradePriceMonitor : ITradePriceMonitor
     {
-        public Currency TargetCurrency { get; set; } = Currency.USD;
+        public virtual Currency TargetCurrency { get; set; } = Currency.USD;
         public TradePriceType PriceType { get; set; } = TradePriceType.Last;
         public double CurrentPrice { get; private set; }
         public int Frequency { get; set; } = 5000;
@@ -91,8 +91,30 @@
 
     public enum Currency
     {
-        GBP,
+        ARS,
+        ARSb,
+        AUD,
+        BRL,
+        CAD,
+        CNY,
+        DKK,
         EUR,
+        HKD,
+        INR,
+        ILS,
+        JPY,
+        MXN,
+        NZD,
+        NOK,
+        PLN,
+        GBP,
+        RUB,
+        ZAR,
+        KRW,
+        SEK,
+        CHF,
+        SGD,
+        THB,
         USD
     }
 }

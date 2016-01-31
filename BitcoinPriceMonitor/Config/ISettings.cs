@@ -6,6 +6,8 @@
         string BitcoinAverageApiUrl { get; }
         string CoinbaseApiUrl { get; }
         string BtceApiUrl { get; }
+        string BitstampApiUrl { get; }
+        string BitfinexApiUrl { get; }
         string PersistanceProfileName { get; }
     }
 }

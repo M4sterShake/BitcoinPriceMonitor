@@ -7,15 +7,18 @@
     using PriceMonitor;
     using Profile;
 
-    public class DatasourceContextMenuSection : TradePriceMonitorContextMenuSection
+    public class DatasourceContextMenuSection : TradePriceMonitorContextMenuSection, IProfileLoader
     {
         private const string DatasourceMenuItemName = "DatasourceMenuItemName";
         private readonly Dictionary<string, Type> _datasources = new Dictionary<string, Type>()
         {
-            { "Bitcoin Average", typeof(BitcoinAveragePriceMonitor) },
-            { "Coinbase", typeof(CoinbasePriceMonitor) },
-            { "BTC-e", typeof(BtcePriceMonitor)}
+            { "Bitcoin Average (Worldwide)", typeof(BitcoinAveragePriceMonitor) },
+            { "Coinbase (USA)", typeof(CoinbasePriceMonitor) },
+            { "BTC-e (Russia)", typeof(BtcePriceMonitor)},
+            { "Bitstamp (USA - USD Only)", typeof(BitstampPriceMonitor) },
+            { "Bitfinex (Hong Kong)", typeof(BitfinexPriceMonitor) }
         };
+        private List<ILoadProfileListener> _loadProfileListeners = new List<ILoadProfileListener>();
 
         private readonly ITradePriceMonitorFactory _monitorFactory;
 
@@ -64,8 +67,22 @@
             TradePriceMonitor.TrasferSubscription(newTradePriceMonitor);
             TradePriceMonitor.Dispose();
             TradePriceMonitor = newTradePriceMonitor;
+            Notify(TradePriceMonitor);
             TradePriceMonitor.StartMonitoring();
             MenuItemCheckedEventHandler(sourceItem);
+        }
+
+        public void Subscribe(ILoadProfileListener listener)
+        {
+            _loadProfileListeners.Add(listener);
+        }
+
+        private void Notify(ITradePriceMonitor newPriceMonitor)
+        {
+            foreach (var listener in _loadProfileListeners)
+            {
+                listener.ProfileLoaded(newPriceMonitor);
+            }
         }
     }
 }

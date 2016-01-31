@@ -24,6 +24,10 @@ namespace BitcoinPriceMonitor.PriceMonitor
                     return new CoinbasePriceMonitor(new RestClient(), _settings);
                 case "BtcePriceMonitor":
                     return new BtcePriceMonitor(new RestClient(), _settings);
+                case "BitstampPriceMonitor":
+                    return new BitstampPriceMonitor(new RestClient(), _settings);
+                case "BitfinexPriceMonitor":
+                    return new BitfinexPriceMonitor(new RestClient(), _settings);
                 default:
                     return null;
             }

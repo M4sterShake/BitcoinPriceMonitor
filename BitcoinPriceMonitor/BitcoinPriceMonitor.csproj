@@ -81,6 +81,8 @@
     <Compile Include="ContextMenu\Sections\TradePriceTypeContextMenuSection.cs" />
     <Compile Include="IoC\ProfileRegistry.cs" />
     <Compile Include="Observer\TradePrice.cs" />
+    <Compile Include="PriceMonitor\BitfinexPriceMonitor.cs" />
+    <Compile Include="PriceMonitor\BitstampPriceMonitor.cs" />
     <Compile Include="PriceMonitor\BtcePriceMonitor.cs" />
     <Compile Include="PriceMonitor\CoinbasePriceMonitor.cs" />
     <Compile Include="PriceMonitor\ITradePriceMonitorFactory.cs" />

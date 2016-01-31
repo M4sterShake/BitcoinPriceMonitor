@@ -10,6 +10,8 @@
         public string BitcoinAverageApiUrl => ConfigurationManager.AppSettings["BitcoinAverageApiUrl"];
         public string CoinbaseApiUrl => ConfigurationManager.AppSettings["CoinbaseApiUrl"];
         public string BtceApiUrl => ConfigurationManager.AppSettings["BtceApiUrl"];
+        public string BitstampApiUrl => ConfigurationManager.AppSettings["BitstampApiUrl"];
+        public string BitfinexApiUrl => ConfigurationManager.AppSettings["BitfinexApiUrl"];
         public string PersistanceProfileName => "xxCURRENTxx";
     }
 }

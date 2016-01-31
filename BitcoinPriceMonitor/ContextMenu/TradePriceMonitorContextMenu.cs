@@ -20,6 +20,7 @@
             _tradePriceMonitor = tradePriceMonitor;
             _menuSections = menuSections;
             (_menuSections.LoadProfileSection as IProfileLoader)?.Subscribe(this);
+            (_menuSections.DatasourceSection as IProfileLoader)?.Subscribe(this);
             Menu = GetMenu();
             InitMenuOptions();
         }
