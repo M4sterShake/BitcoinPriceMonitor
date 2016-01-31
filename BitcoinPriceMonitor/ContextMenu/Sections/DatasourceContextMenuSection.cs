@@ -13,7 +13,8 @@
         private readonly Dictionary<string, Type> _datasources = new Dictionary<string, Type>()
         {
             { "Bitcoin Average", typeof(BitcoinAveragePriceMonitor) },
-            { "Coinbase", typeof(CoinbasePriceMonitor) }
+            { "Coinbase", typeof(CoinbasePriceMonitor) },
+            { "BTC-e", typeof(BtcePriceMonitor)}
         };
 
         private readonly ITradePriceMonitorFactory _monitorFactory;

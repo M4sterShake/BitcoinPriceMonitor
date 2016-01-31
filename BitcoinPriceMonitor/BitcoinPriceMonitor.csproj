@@ -37,6 +37,10 @@
   <ItemGroup>
     <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="Microsoft.VisualStudio.OLE.Interop, Version=7.1.40304.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+    <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.8.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="RestSharp, Version=105.2.3.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\RestSharp.105.2.3\lib\net452\RestSharp.dll</HintPath>
       <Private>True</Private>
@@ -77,6 +81,7 @@
     <Compile Include="ContextMenu\Sections\TradePriceTypeContextMenuSection.cs" />
     <Compile Include="IoC\ProfileRegistry.cs" />
     <Compile Include="Observer\TradePrice.cs" />
+    <Compile Include="PriceMonitor\BtcePriceMonitor.cs" />
     <Compile Include="PriceMonitor\CoinbasePriceMonitor.cs" />
     <Compile Include="PriceMonitor\ITradePriceMonitorFactory.cs" />
     <Compile Include="PriceMonitor\RestTradePriceMonitor.cs" />
