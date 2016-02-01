@@ -38,6 +38,7 @@
             foreach (MenuItem item in ContextMenuItem.MenuItems)
             {
                 item.Checked = item.Text == TradePriceMonitor.TargetCurrency.ToString();
+                item.Enabled =TradePriceMonitor.SupportedCurrencies.Contains((Currency) Enum.Parse(typeof (Currency), item.Text));
             }
         }
 

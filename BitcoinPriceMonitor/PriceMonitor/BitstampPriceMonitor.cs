@@ -16,6 +16,11 @@ namespace BitcoinPriceMonitor.PriceMonitor
             ApiClient.BaseUrl = new Uri(Settings.BitstampApiUrl);
         }
 
+        public override IEnumerable<Currency> SupportedCurrencies => new List<Currency>
+        {
+            Currency.USD
+        };
+
         public override Currency TargetCurrency => Currency.USD;
 
         protected override double CheckPrice()

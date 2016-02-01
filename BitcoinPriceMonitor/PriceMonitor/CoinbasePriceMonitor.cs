@@ -14,6 +14,14 @@
             ApiClient.BaseUrl = new Uri(Settings.CoinbaseApiUrl);
         }
 
+        public override IEnumerable<Currency> SupportedCurrencies => new List<Currency>
+        {
+            Currency.CAD,
+            Currency.EUR,
+            Currency.GBP,
+            Currency.USD
+        };
+
         protected override double CheckPrice()
         {
             var request = new RestRequest("/products/BTC-{currency}/ticker", Method.GET);

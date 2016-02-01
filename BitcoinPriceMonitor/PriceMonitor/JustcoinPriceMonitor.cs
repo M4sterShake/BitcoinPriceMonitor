@@ -16,6 +16,11 @@ namespace BitcoinPriceMonitor.PriceMonitor
             ApiClient.BaseUrl = new Uri(Settings.JustcoinApiUrl);
         }
 
+        public override IEnumerable<Currency> SupportedCurrencies => new List<Currency>
+        {
+            Currency.USD
+        };
+
         protected override double CheckPrice()
         {
             var marketId = $"BTC{Enum.GetName(typeof(Currency), TargetCurrency)}";

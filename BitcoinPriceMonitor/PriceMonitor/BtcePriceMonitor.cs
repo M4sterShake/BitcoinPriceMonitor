@@ -15,6 +15,12 @@
             ApiClient.BaseUrl = new Uri(Settings.BtceApiUrl);
         }
 
+        public override IEnumerable<Currency> SupportedCurrencies => new List<Currency>
+        {
+            Currency.EUR,
+            Currency.USD
+        };
+
         protected override double CheckPrice()
         {
             var priceConversionString = $"btc_{Enum.GetName(typeof (Currency), TargetCurrency)?.ToLower()}";

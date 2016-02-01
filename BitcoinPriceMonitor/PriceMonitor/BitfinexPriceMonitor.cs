@@ -16,6 +16,11 @@ namespace BitcoinPriceMonitor.PriceMonitor
             ApiClient.BaseUrl = new Uri(Settings.BitfinexApiUrl);
         }
 
+        public override IEnumerable<Currency> SupportedCurrencies => new List<Currency>
+        {
+            Currency.USD
+        };
+
         protected override double CheckPrice()
         {
             var request = new RestRequest("/pubticker/BTC{currency}", Method.GET);

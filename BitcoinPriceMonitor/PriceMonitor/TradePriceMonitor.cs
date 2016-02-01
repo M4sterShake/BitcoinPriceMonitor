@@ -12,6 +12,7 @@
         public TradePriceType PriceType { get; set; } = TradePriceType.Last;
         public double CurrentPrice { get; private set; }
         public int Frequency { get; set; } = 5000;
+        public abstract IEnumerable<Currency> SupportedCurrencies { get; }
 
         private Timer _priceCheckTimer;
         private readonly IList<ITradePriceObserver> _subscribers = new List<ITradePriceObserver>();

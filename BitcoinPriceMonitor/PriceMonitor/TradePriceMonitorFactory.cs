@@ -1,4 +1,6 @@
-﻿namespace BitcoinPriceMonitor.PriceMonitor
+﻿using System.Linq;
+
+namespace BitcoinPriceMonitor.PriceMonitor
 {
     using Config;
     using Profile;
@@ -38,7 +40,9 @@
         {
             var monitor = Get(profile.MonitorType);
             monitor.PriceType = profile.PriceType;
-            monitor.TargetCurrency = profile.TargetCurrency;
+            monitor.TargetCurrency = monitor.SupportedCurrencies.Contains(profile.TargetCurrency)
+                ? profile.TargetCurrency
+                : monitor.SupportedCurrencies.First();
             monitor.Frequency = profile.Frequency;
 
             return monitor;
