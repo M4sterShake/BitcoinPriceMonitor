@@ -20,10 +20,10 @@ namespace BitcoinPriceMonitorTests
         {
             // Arrange
             var mockTradePriceMonitor = new Mock<ITradePriceMonitor>();
-            var mockProfileStore = new Mock<IProfileStore>();
+            var mockMenuSections = new Mock<ITradePriceMenuSections>();
 
             // Act
-            var target = new TradePriceMonitorContextMenu(mockTradePriceMonitor.Object, mockProfileStore.Object);
+            var target = new TradePriceMonitorContextMenu(mockTradePriceMonitor.Object, mockMenuSections.Object);
             MenuItem currencyMenuItem = null;
             MenuItem exitMenuItem = null;
             foreach (MenuItem item in target.Menu.MenuItems)
@@ -49,8 +49,8 @@ namespace BitcoinPriceMonitorTests
         {
             // Arrange
             var mockTradePriceMonitor = new Mock<ITradePriceMonitor>();
-            var mockProfileStore = new Mock<IProfileStore>();
-            var target = new TradePriceMonitorContextMenu(mockTradePriceMonitor.Object, mockProfileStore.Object);
+            var mockMenuSections = new Mock<ITradePriceMenuSections>();
+            var target = new TradePriceMonitorContextMenu(mockTradePriceMonitor.Object, mockMenuSections.Object);
 
             //Act
             var observerId = target.ObserverId;
@@ -65,8 +65,8 @@ namespace BitcoinPriceMonitorTests
         {
             // Arrange
             var mockTradePriceMonitor = new Mock<ITradePriceMonitor>();
-            var mockProfileStore = new Mock<IProfileStore>();
-            var target = new TradePriceMonitorContextMenu(mockTradePriceMonitor.Object, mockProfileStore.Object);
+            var mockMenuSections = new Mock<ITradePriceMenuSections>();
+            var target = new TradePriceMonitorContextMenu(mockTradePriceMonitor.Object, mockMenuSections.Object);
             var originalPriceItemText = target.Menu.MenuItems.Find("BitcoinPrice", false)[0].Text;
             var updatePrice = 2.5;
 
@@ -84,8 +84,8 @@ namespace BitcoinPriceMonitorTests
         {
             // Arrange
             var mockTradePriceMonitor = new Mock<ITradePriceMonitor>();
-            var mockProfileStore = new Mock<IProfileStore>();
-            var target = new TradePriceMonitorContextMenu(mockTradePriceMonitor.Object, mockProfileStore.Object);
+            var mockMenuSections = new Mock<ITradePriceMenuSections>();
+            var target = new TradePriceMonitorContextMenu(mockTradePriceMonitor.Object, mockMenuSections.Object);
             Menu.MenuItemCollection currencyMenuItems = null;
             MenuItem euroMenuItem = null;
             bool euroMenuItemOriginallyChecked = true;
@@ -126,8 +126,8 @@ namespace BitcoinPriceMonitorTests
         {
             // Arrange
             var mockTradePriceMonitor = new Mock<ITradePriceMonitor>();
-            var mockProfileStore = new Mock<IProfileStore>();
-            var target = new TradePriceMonitorContextMenu(mockTradePriceMonitor.Object, mockProfileStore.Object);
+            var mockMenuSections = new Mock<ITradePriceMenuSections>();
+            var target = new TradePriceMonitorContextMenu(mockTradePriceMonitor.Object, mockMenuSections.Object);
             Menu.MenuItemCollection tradePriceTypeMenuItems = null;
             MenuItem bidMenuItem = null;
             bool bidMenuItemOriginallyChecked = true;
