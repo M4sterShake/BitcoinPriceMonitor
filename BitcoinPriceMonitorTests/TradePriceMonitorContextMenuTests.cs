@@ -1,4 +1,5 @@
-﻿using BitcoinPriceMonitor.Observer;
+﻿using BitcoinPriceMonitor.ContextMenu.Sections;
+using BitcoinPriceMonitor.Observer;
 using BitcoinPriceMonitor.Profile;
 
 namespace BitcoinPriceMonitorTests
@@ -15,6 +16,36 @@ namespace BitcoinPriceMonitorTests
     [TestClass]
     public class TradePriceMonitorContextMenuTests
     {
+        [TestMethod]
+        public void TradePriceMonitorContextMenu_ConstructorSubscribesMenuWithProfileLoaders()
+        {
+            // Arrange
+            var mockTradePriceMonitor = new Mock<ITradePriceMonitor>();
+            var mockMenuSections = new Mock<ITradePriceMenuSections>();
+            var menuItem = new MenuItem();
+            var mockLoadProfileMenuSection = new Mock<ITradePriceMonitorContextMenuSection>();
+            var mockDatasourceMenuSection = new Mock<ITradePriceMonitorContextMenuSection>();
+            var mockDatasourceMenuSectionProfileLoader = mockDatasourceMenuSection.As<IProfileLoader>();
+            var mockLoadProfileMenuSectionProfileLoader = mockLoadProfileMenuSection.As<IProfileLoader>();
+            var mockEveryOtherMenuSection = new Mock<ITradePriceMonitorContextMenuSection>();
+            mockLoadProfileMenuSection.Setup(m => m.GetMenuItem()).Returns(menuItem);
+            mockDatasourceMenuSection.Setup(m => m.GetMenuItem()).Returns(menuItem);
+            mockEveryOtherMenuSection.Setup(m => m.GetMenuItem()).Returns(menuItem);
+            mockMenuSections.Setup(m => m.LoadProfileSection).Returns(mockLoadProfileMenuSection.Object);
+            mockMenuSections.Setup(m => m.DatasourceSection).Returns(mockDatasourceMenuSection.Object);
+            mockMenuSections.Setup(m => m.SaveProfileSection).Returns(mockEveryOtherMenuSection.Object);
+            mockMenuSections.Setup(m => m.CurrencySection).Returns(mockEveryOtherMenuSection.Object);
+            mockMenuSections.Setup(m => m.FrequencySection).Returns(mockEveryOtherMenuSection.Object);
+            mockMenuSections.Setup(m => m.PriceTypeSection).Returns(mockEveryOtherMenuSection.Object);
+
+            // Act
+            var target = new TradePriceMonitorContextMenu(mockTradePriceMonitor.Object, mockMenuSections.Object);
+
+            // Assert
+            mockDatasourceMenuSectionProfileLoader.Verify(m => m.Subscribe(target), Times.Once);
+            mockLoadProfileMenuSectionProfileLoader.Verify(m => m.Subscribe(target), Times.Once);
+        }
+
         [TestMethod]
         public void TradePriceMonitorContextMenu_MenuSanityCheck()
         {

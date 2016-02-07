@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BitcoinPriceMonitor.Profile
 {
-    interface IProfileLoader
+    public interface IProfileLoader
     {
         void Subscribe(ILoadProfileListener listener);
     }
