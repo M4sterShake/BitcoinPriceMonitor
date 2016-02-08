@@ -47,6 +47,38 @@ namespace BitcoinPriceMonitorTests
         }
 
         [TestMethod]
+        public void TradePriceMonitorContextMenu_ObserverIdReturnsNewGuid()
+        {
+            // Arrange
+            var mockTradePriceMonitor = new Mock<ITradePriceMonitor>();
+            var mockMenuSections = new Mock<ITradePriceMenuSections>();
+            var menuItem = new MenuItem();
+            var mockLoadProfileMenuSection = new Mock<ITradePriceMonitorContextMenuSection>();
+            var mockDatasourceMenuSection = new Mock<ITradePriceMonitorContextMenuSection>();
+            var mockEveryOtherMenuSection = new Mock<ITradePriceMonitorContextMenuSection>();
+            mockLoadProfileMenuSection.Setup(m => m.GetMenuItem()).Returns(menuItem);
+            mockDatasourceMenuSection.Setup(m => m.GetMenuItem()).Returns(menuItem);
+            mockEveryOtherMenuSection.Setup(m => m.GetMenuItem()).Returns(menuItem);
+            mockMenuSections.Setup(m => m.LoadProfileSection).Returns(mockLoadProfileMenuSection.Object);
+            mockMenuSections.Setup(m => m.DatasourceSection).Returns(mockDatasourceMenuSection.Object);
+            mockMenuSections.Setup(m => m.SaveProfileSection).Returns(mockEveryOtherMenuSection.Object);
+            mockMenuSections.Setup(m => m.CurrencySection).Returns(mockEveryOtherMenuSection.Object);
+            mockMenuSections.Setup(m => m.FrequencySection).Returns(mockEveryOtherMenuSection.Object);
+            mockMenuSections.Setup(m => m.PriceTypeSection).Returns(mockEveryOtherMenuSection.Object);
+            var firstTarget = new TradePriceMonitorContextMenu(mockTradePriceMonitor.Object, mockMenuSections.Object);
+            var secondTarget = new TradePriceMonitorContextMenu(mockTradePriceMonitor.Object, mockMenuSections.Object);
+
+            // Act
+            var firstTargetObserverId = firstTarget.ObserverId;
+            var secondTargetObserverId = secondTarget.ObserverId;
+
+            // Assert
+            Assert.IsNotNull(firstTargetObserverId);
+            Assert.IsNotNull(secondTargetObserverId);
+            Assert.AreNotEqual(firstTargetObserverId.ToString(), secondTargetObserverId.ToString());
+        }
+
+        /*[TestMethod]
         public void TradePriceMonitorContextMenu_MenuSanityCheck()
         {
             // Arrange
@@ -75,6 +107,7 @@ namespace BitcoinPriceMonitorTests
             Assert.IsNotNull(exitMenuItem);
         }
 
+        
         [TestMethod]
         public void TradePriceMonitorContextMenu_ObserverIdTest()
         {
@@ -193,5 +226,6 @@ namespace BitcoinPriceMonitorTests
                 }
             }
         }
+        */
     }
 }
